@@ -13,3 +13,10 @@ provider "oci" {
   private_key_path = "${var.private_key_path}"
   region           = "${var.region}"
 }
+
+resource "oci_core_virtual_network" "simple-vcn" {
+  cidr_block     = "10.1.0.0/16"
+  dns_label      = "vcn1"
+  compartment_id = "${var.compartment_ocid}"
+  display_name   = "simple-vcn"
+}
