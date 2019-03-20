@@ -1,2 +1,4 @@
 .DS_Store
-config.sh
+variables.sh
+terraform.tfstate
+terraform.tfstate.backup
