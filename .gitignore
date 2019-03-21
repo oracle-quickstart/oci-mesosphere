@@ -2,3 +2,4 @@
 variables.sh
 terraform.tfstate
 terraform.tfstate.backup
+backend.txt
