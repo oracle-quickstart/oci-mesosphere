@@ -1,5 +1,5 @@
 .DS_Store
-variables.sh
+ENV_VAR
 terraform.tfstate
 terraform.tfstate.backup
 backend.txt
