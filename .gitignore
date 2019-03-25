@@ -1,5 +1,3 @@
 .DS_Store
 ENV_VAR
-terraform.tfstate
-terraform.tfstate.backup
-backend.txt
+BACKEND

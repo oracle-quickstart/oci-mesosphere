@@ -1,22 +1,36 @@
-variable "tenancy_ocid" {}
-variable "user_ocid" {}
-variable "fingerprint" {}
-variable "private_key_path" {}
-variable "compartment_ocid" {}
-variable "region" {}
-
-provider "oci" {
-  version          = ">= 3.18.0"
-  tenancy_ocid     = "${var.tenancy_ocid}"
-  user_ocid        = "${var.user_ocid}"
-  fingerprint      = "${var.fingerprint}"
-  private_key_path = "${var.private_key_path}"
-  region           = "${var.region}"
+resource "oci_core_virtual_network" "MesosVCN" {
+  cidr_block     = "10.1.0.0/16"
+  dns_label      = "MesosVCN"
+  compartment_id = "${var.compartment_ocid}"
+  display_name   = "mesosvcn"
 }
 
-resource "oci_core_virtual_network" "simple-vcn" {
-  cidr_block     = "10.1.0.0/16"
-  dns_label      = "vcntb1"
+resource "oci_core_subnet" "MesosBackendSubnet" {
+  availability_domain = "${data.oci_identity_availability_domain.ad.name}"
+  cidr_block          = "10.1.20.0/24"
+  display_name        = "MesosBackend"
+  dns_label           = "mesosbackend"
+  security_list_ids   = ["${oci_core_virtual_network.MesosVCN.default_security_list_id}"]
+  compartment_id      = "${var.compartment_ocid}"
+  vcn_id              = "${oci_core_virtual_network.MesosVCN.id}"
+  route_table_id      = "${oci_core_route_table.MesosRT.id}"
+  dhcp_options_id     = "${oci_core_virtual_network.MesosVCN.default_dhcp_options_id}"
+}
+
+resource "oci_core_internet_gateway" "MesosIG" {
   compartment_id = "${var.compartment_ocid}"
-  display_name   = "service-vcn"
+  display_name   = "MesosIG"
+  vcn_id         = "${oci_core_virtual_network.MesosVCN.id}"
+}
+
+resource "oci_core_route_table" "MesosRT" {
+  compartment_id = "${var.compartment_ocid}"
+  vcn_id         = "${oci_core_virtual_network.MesosVCN.id}"
+  display_name   = "MesosRouteTable"
+
+  route_rules {
+    destination       = "0.0.0.0/0"
+    destination_type  = "CIDR_BLOCK"
+    network_entity_id = "${oci_core_internet_gateway.MesosIG.id}"
+  }
 }

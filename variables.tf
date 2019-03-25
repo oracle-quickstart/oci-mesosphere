@@ -53,11 +53,11 @@ variable "BootStrapFile" {
 }
 
 variable "tag_namespace_description" {
-  default = "Just a test"
+  default = "Mesossphere"
 }
 
 variable "tag_namespace_name" {
-  default = "exampletagns"
+  default = "dcos"
 }
 
 variable "volume_attachment_device" {
