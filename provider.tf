@@ -7,3 +7,7 @@ provider "oci" {
   private_key_path = "${var.private_key_path}"
   region           = "${var.region}"
 }
+
+terraform {
+  required_version = "> 0.11.7"
+}

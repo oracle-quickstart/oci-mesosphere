@@ -1,15 +1,17 @@
+// Copyright (c) 2017, 2019, Oracle and/or its affiliates. All rights reserved.
+
 resource "oci_core_virtual_network" "MesosVCN" {
-  cidr_block     = "10.1.0.0/16"
-  dns_label      = "MesosVCN"
+  cidr_block     = "10.2.0.0/16"
   compartment_id = "${var.compartment_ocid}"
-  display_name   = "mesosvcn"
+  display_name   = "MesosVCN"
+  dns_label      = "mesosvcn"
 }
 
-resource "oci_core_subnet" "MesosBackendSubnet" {
+resource "oci_core_subnet" "MesosSubnet" {
   availability_domain = "${data.oci_identity_availability_domain.ad.name}"
-  cidr_block          = "10.1.20.0/24"
-  display_name        = "MesosBackend"
-  dns_label           = "mesosbackend"
+  cidr_block          = "10.2.20.0/24"
+  display_name        = "MesosSubnet"
+  dns_label           = "Mesossubnet"
   security_list_ids   = ["${oci_core_virtual_network.MesosVCN.default_security_list_id}"]
   compartment_id      = "${var.compartment_ocid}"
   vcn_id              = "${oci_core_virtual_network.MesosVCN.id}"
