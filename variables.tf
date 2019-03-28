@@ -43,8 +43,8 @@ variable "instance_image_ocid" {
   }
 }
 
-variable "DBSize" {
-  default = "50" // size in GBs
+variable "DiskSize" {
+  default = "60" // size in GBs
 }
 
 variable "BootStrapFile" {

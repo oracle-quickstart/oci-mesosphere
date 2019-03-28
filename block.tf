@@ -5,7 +5,7 @@ resource "oci_core_volume" "DCOSBlock" {
   availability_domain = "${data.oci_identity_availability_domain.ad.name}"
   compartment_id      = "${var.compartment_ocid}"
   display_name        = "DCOSBlock${count.index}"
-  size_in_gbs         = "${var.DBSize}"
+  size_in_gbs         = "${var.DiskSize}"
 }
 
 resource "oci_core_volume_attachment" "DCOSBlockAttach" {
@@ -29,7 +29,7 @@ resource "oci_core_volume" "DCOSBlockParavirtualized" {
   availability_domain = "${data.oci_identity_availability_domain.ad.name}"
   compartment_id      = "${var.compartment_ocid}"
   display_name        = "DCOSBlockParavirtualized${count.index}"
-  size_in_gbs         = "${var.DBSize}"
+  size_in_gbs         = "${var.DiskSize}"
 }
 
 resource "oci_core_volume_attachment" "DCOSBlockAttachParavirtualized" {
