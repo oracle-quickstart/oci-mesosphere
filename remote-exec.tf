@@ -2,13 +2,13 @@
 
 resource "null_resource" "remote-exec" {
   depends_on = ["oci_core_instance.DCOSInstance", "oci_core_volume_attachment.DCOSBlockAttach"]
-  count      = "${var.NumInstances * var.NumIscsiVolumesPerInstance}"
+  count      = "${var.NumInstances}"
 
   provisioner "remote-exec" {
     connection {
       agent       = false
       timeout     = "30m"
-      host        = "${oci_core_instance.DCOSInstance.*.public_ip[count.index % var.NumInstances]}"
+      host        = "${oci_core_instance.DCOSInstance.*.public_ip[count.index]}"
       user        = "opc"
       private_key = "${var.ssh_private_key}"
     }

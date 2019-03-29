@@ -2,7 +2,8 @@
 
 resource "oci_core_instance" "DCOSInstance" {
   count               = "${var.NumInstances}"
-  availability_domain = "${data.oci_identity_availability_domain.ad.name}"
+  availability_domain = "${lookup(data.oci_identity_availability_domains.ADs.availability_domains[count.index % var.nb_ad[var.region]],"name")}"
+  fault_domain        = "FAULT-DOMAIN-${(count.index / var.nb_ad[var.region]) % 3 + 1}"
   compartment_id      = "${var.compartment_ocid}"
   display_name        = "DCOSInstance${count.index}"
   shape               = "${var.instance_shape}"
@@ -11,7 +12,7 @@ resource "oci_core_instance" "DCOSInstance" {
     subnet_id        = "${oci_core_subnet.MesosSubnet.id}"
     display_name     = "primaryvnic"
     assign_public_ip = true
-    hostname_label   = "Mesosinstance${count.index}"
+    hostname_label   = "mcp${count.index}"
   }
 
   source_details {
