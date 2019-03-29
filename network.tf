@@ -4,7 +4,7 @@ resource "oci_core_virtual_network" "MesosVCN" {
   cidr_block     = "10.2.0.0/16"
   compartment_id = "${var.compartment_ocid}"
   display_name   = "MesosVCN"
-  dns_label      = "mesosvcn"
+  dns_label      = "Mesosvcn"
 }
 
 resource "oci_core_subnet" "MesosSubnet" {
