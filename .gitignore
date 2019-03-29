@@ -2,3 +2,4 @@
 ENV-VARS
 backend.tf
 .terraform
+oscemea005.tfvars
