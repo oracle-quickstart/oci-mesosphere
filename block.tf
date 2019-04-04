@@ -25,7 +25,6 @@ resource "oci_core_volume_attachment" "DCOSBlockAttach" {
   }
 
   # register and connect the iSCSI block volume
-
   provisioner "remote-exec" {
     inline = [
       "touch ~/IMadeAFile.Right.Here",
@@ -35,10 +34,47 @@ resource "oci_core_volume_attachment" "DCOSBlockAttach" {
     ]
   }
 
-  # Set this to enable CHAP authentication for an ISCSI volume attachment. The oci_core_volume_attachment resource will
-  # contain the CHAP authentication details via the "chap_secret" and "chap_username" attributes.
-  #use_chap = true
+  # initialize partition and file system
+  provisioner "remote-exec" {
+    inline = [
+      "set -x",
+      "export DEVICE_ID=ip-${self.ipv4[count.index]}:${self.port[count.index]}-iscsi-${self.iqn[count.index]}-lun-1",
+      "export HAS_PARTITION=$(sudo partprobe -d -s /dev/disk/by-path/$${DEVICE_ID} | wc -l)",
+      "if [ $HAS_PARTITION -eq 0 ] ; then",
+      "  (echo g; echo n; echo ''; echo ''; echo ''; echo w) | sudo fdisk /dev/disk/by-path/$${DEVICE_ID}",
+      "  while [[ ! -e /dev/disk/by-path/$${DEVICE_ID}-part1 ]] ; do sleep 1; done",
+      "  sudo mkfs.xfs /dev/disk/by-path/$${DEVICE_ID}-part1",
+      "fi",
+    ]
+  }
 
-  # Set this to attach the volume as read-only.
-  #is_read_only = true
+  # mount the partition
+  provisioner "remote-exec" {
+    inline = [
+      "set -x",
+      "export DEVICE_ID=ip-${self.ipv4[count.index]}:${self.port[count.index]}-iscsi-${self.iqn[count.index]}-lun-1",
+      "sudo mkdir -p /mnt/vol1",
+      "export UUID=$(sudo /usr/sbin/blkid -s UUID -o value /dev/disk/by-path/$${DEVICE_ID}-part1)",
+      "echo 'UUID='$${UUID}' /mnt/vol1 xfs defaults,_netdev,nofail 0 2' | sudo tee -a /etc/fstab",
+      "sudo mount -a",
+    ]
+  }
+
+  # unmount and disconnect on destroy
+  provisioner "remote-exec" {
+    when       = "destroy"
+    on_failure = "continue"
+    inline = [
+      "set -x",
+      "export DEVICE_ID=ip-${self.ipv4[count.index]}:${self.port[count.index]}-iscsi-${self.iqn[count.index]}-lun-1",
+      "export UUID=$(sudo /usr/sbin/blkid -s UUID -o value /dev/disk/by-path/$${DEVICE_ID}-part1)",
+      "sudo umount /mnt/vol1",
+      "if [[ $UUID ]] ; then",
+      "  sudo sed -i.bak '\\@^UUID='$${UUID}'@d' /etc/fstab",
+      "fi",
+      "sudo iscsiadm -m node -T ${self.iqn[count.index]} -p ${self.ipv4[count.index]}:${self.port[count.index]} -u",
+      "sudo iscsiadm -m node -o delete -T ${self.iqn[count.index]} -p ${self.ipv4[count.index]}:${self.port[count.index]}",
+      ]
+    }
+
 }
