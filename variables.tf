@@ -16,7 +16,7 @@ variable "NumInstances" {
 }
 
 variable "vcn_cidr" {
-  default = "10.3.0.0/16"
+  default = "10.1.0.0/16"
 }
 
 variable "authorized_ips" {
@@ -31,12 +31,12 @@ variable "instance_image_ocid" {
 
   default = {
     // See https://docs.us-phoenix-1.oraclecloud.com/images/
-    // Oracle-provided image "Oracle-Linux-7.6-2019.02.20-0"
-    us-phoenix-1   = "ocid1.image.oc1.phx.aaaaaaaacss7qgb6vhojblgcklnmcbchhei6wgqisqmdciu3l4spmroipghq"
-    us-ashburn-1   = "ocid1.image.oc1.iad.aaaaaaaannaquxy7rrbrbngpaqp427mv426rlalgihxwdjrz3fr2iiaxah5a"
-    eu-frankfurt-1 = "ocid1.image.oc1.eu-frankfurt-1.aaaaaaaa527xpybx2azyhcz2oyk6f4lsvokyujajo73zuxnnhcnp7p24pgva"
-    uk-london-1    = "ocid1.image.oc1.uk-london-1.aaaaaaaarruepdlahln5fah4lvm7tsf4was3wdx75vfs6vljdke65imbqnhq"
-    ca-toronto-1   = "ocid1.image.oc1.ca-toronto-1.aaaaaaaa7ac57wwwhputaufcbf633ojir6scqa4yv6iaqtn3u64wisqd3jjq"
+    // Oracle-provided image "CentOS-7-2019.03.08-0"
+    us-phoenix-1   = "ocid1.image.oc1.phx.aaaaaaaaa2ph5vy4u7vktmf3c6zemhlncxkomvay2afrbw5vouptfbydwmtq"
+    us-ashburn-1   = "ocid1.image.oc1.iad.aaaaaaaahhgvnnprjhfmzynecw2lqkwhztgibz5tcs3x4d5rxmbqcmesyqta"
+    eu-frankfurt-1 = "ocid1.image.oc1.eu-frankfurt-1.aaaaaaaavsw2452x5psvj7lzp7opjcpj3yx7or4swwzl5vrdydxtfv33sbmq"
+    uk-london-1    = "ocid1.image.oc1.uk-london-1.aaaaaaaa3iltzfhdk5m6f27wcuw4ttcfln54twkj66rsbn52yemg3gi5pkqa"
+    ca-toronto-1   = "ocid1.image.oc1.ca-toronto-1.aaaaaaaaqqbtppujg46m2twxeam2god3ktu5s6ehamexb66wsb4ll4vaxpfq"
   }
 }
 

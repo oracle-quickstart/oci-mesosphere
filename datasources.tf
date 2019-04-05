@@ -7,15 +7,15 @@ data "oci_identity_availability_domains" "ADs" {
 /*
 # Gets the boot volume attachments for each instance
 data "oci_core_boot_volume_attachments" "DCOSBootVolumeAttachments" {
-  depends_on          = ["oci_core_instance.DCOSInstance"]
+  depends_on          = ["oci_core_instance.DCOSMasterInstance"]
   count               = "${var.NumInstances}"
-  availability_domain = "${oci_core_instance.DCOSInstance.*.availability_domain[count.index]}"
+  availability_domain = "${oci_core_instance.DCOSMasterInstance.*.availability_domain[count.index]}"
   compartment_id      = "${var.compartment_ocid}"
 
-  instance_id = "${oci_core_instance.DCOSInstance.*.id[count.index]}"
+  instance_id = "${oci_core_instance.DCOSMasterInstance.*.id[count.index]}"
 }
 
-data "oci_core_instance_devices" "DCOSInstanceDevices" {
-  instance_id = "${oci_core_instance.DCOSInstance.*.id[count.index]}"
+data "oci_core_instance_devices" "DCOSMasterInstanceDevices" {
+  instance_id = "${oci_core_instance.DCOSMasterInstance.*.id[count.index]}"
 }
 */

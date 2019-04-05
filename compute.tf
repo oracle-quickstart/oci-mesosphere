@@ -1,15 +1,15 @@
 // Copyright (c) 2017, 2019, Oracle and/or its affiliates. All rights reserved.
 
-resource "oci_core_instance" "DCOSInstance" {
+resource "oci_core_instance" "DCOSMasterInstance" {
   count               = "${var.NumInstances}"
   availability_domain = "${lookup(data.oci_identity_availability_domains.ADs.availability_domains[count.index % var.nb_ad[var.region]],"name")}"
   fault_domain        = "FAULT-DOMAIN-${(count.index / var.nb_ad[var.region]) % 3 + 1}"
   compartment_id      = "${var.compartment_ocid}"
-  display_name        = "DCOSInstance${count.index}"
+  display_name        = "DCOSMasterInstance${count.index}"
   shape               = "${var.instance_shape}"
 
   create_vnic_details {
-    subnet_id        = "${oci_core_subnet.MesosSubnet.id}"
+    subnet_id        = "${oci_core_subnet.DCOSSubnet.id}"
     display_name     = "primaryvnic"
     assign_public_ip = true
     hostname_label   = "mcp${count.index}"
