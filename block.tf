@@ -14,11 +14,12 @@ resource "oci_core_volume_attachment" "DCOSMasterBlockAttach" {
   compartment_id  = "${var.compartment_ocid}"
   instance_id     = "${oci_core_instance.DCOSMasterInstance.*.id[count.index]}"
   volume_id       = "${oci_core_volume.DCOSMasterBlock.*.id[count.index]}"
-  device          = "${count.index == 0 ? var.volume_attachment_device : ""}"
+#  device          = "${count.index == 0 ? var.volume_attachment_device : ""}"
 
   connection {
     agent       = false
     timeout     = "30m"
+    type        = "ssh"
     host        = "${oci_core_instance.DCOSMasterInstance.*.public_ip[count.index]}"
     user        = "opc"
     private_key = "${var.ssh_private_key}"
@@ -27,10 +28,9 @@ resource "oci_core_volume_attachment" "DCOSMasterBlockAttach" {
   # register and connect the iSCSI block volume
   provisioner "remote-exec" {
     inline = [
-      "touch ~/IMadeAFile.Right.Here",
       "sudo iscsiadm -m node -o new -T ${self.iqn} -p ${self.ipv4}:${self.port}",
       "sudo iscsiadm -m node -o update -T ${self.iqn} -n node.startup -v automatic",
-      "echo sudo iscsiadm -m node -T ${self.iqn} -p ${self.ipv4}:${self.port} -l >> ~/.bashrc",
+      "sudo iscsiadm -m node -T ${self.iqn} -p ${self.ipv4}:${self.port} -l",
     ]
   }
 

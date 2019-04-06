@@ -9,5 +9,5 @@ provider "oci" {
 }
 
 terraform {
-  required_version = "> 0.11.7"
+  required_version = "> 0.11.12"
 }
