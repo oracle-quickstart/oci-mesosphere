@@ -14,7 +14,6 @@ resource "oci_core_volume_attachment" "DCOSMasterBlockAttach" {
   compartment_id  = "${var.compartment_ocid}"
   instance_id     = "${oci_core_instance.DCOSMasterInstance.*.id[count.index]}"
   volume_id       = "${oci_core_volume.DCOSMasterBlock.*.id[count.index]}"
-#  device          = "${count.index == 0 ? var.volume_attachment_device : ""}"
 
   connection {
     agent       = false
