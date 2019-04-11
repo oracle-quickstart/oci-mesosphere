@@ -1,7 +1,7 @@
 // Copyright (c) 2017, 2019, Oracle and/or its affiliates. All rights reserved.
 
 resource "oci_core_volume" "DCOSMasterBlock" {
-  count               = "${var.NumInstances}"
+  count               = "${var.NumMasterInstances}"
   availability_domain = "${lookup(data.oci_identity_availability_domains.ADs.availability_domains[count.index % var.nb_ad[var.region]],"name")}"
   compartment_id      = "${var.compartment_ocid}"
   display_name        = "DCOSMasterBlock${count.index}"
@@ -9,7 +9,7 @@ resource "oci_core_volume" "DCOSMasterBlock" {
 }
 
 resource "oci_core_volume_attachment" "DCOSMasterBlockAttach" {
-  count           = "${var.NumInstances}"
+  count           = "${var.NumMasterInstances}"
   attachment_type = "iscsi"
   compartment_id  = "${var.compartment_ocid}"
   instance_id     = "${oci_core_instance.DCOSMasterInstance.*.id[count.index]}"

@@ -8,7 +8,7 @@ data "oci_identity_availability_domains" "ADs" {
 # Gets the boot volume attachments for each instance
 data "oci_core_boot_volume_attachments" "DCOSBootVolumeAttachments" {
   depends_on          = ["oci_core_instance.DCOSMasterInstance"]
-  count               = "${var.NumInstances}"
+  count               = "${var.NumMasterInstances}"
   availability_domain = "${oci_core_instance.DCOSMasterInstance.*.availability_domain[count.index]}"
   compartment_id      = "${var.compartment_ocid}"
 

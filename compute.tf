@@ -1,12 +1,12 @@
 // Copyright (c) 2017, 2019, Oracle and/or its affiliates. All rights reserved.
 
 resource "oci_core_instance" "DCOSMasterInstance" {
-  count               = "${var.NumInstances}"
+  count               = "${var.NumMasterInstances}"
   availability_domain = "${lookup(data.oci_identity_availability_domains.ADs.availability_domains[count.index % var.nb_ad[var.region]],"name")}"
   fault_domain        = "FAULT-DOMAIN-${(count.index / var.nb_ad[var.region]) % 3 + 1}"
   compartment_id      = "${var.compartment_ocid}"
   display_name        = "DCOSMasterInstance${count.index}"
-  shape               = "${var.instance_shape}"
+  shape               = "${var.master_instance_shape}"
 
   create_vnic_details {
     subnet_id        = "${oci_core_subnet.DCOSSubnet.id}"

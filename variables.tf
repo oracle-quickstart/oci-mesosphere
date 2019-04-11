@@ -11,7 +11,7 @@ variable "ssh_public_key" {}
 variable "ssh_private_key" {}
 
 # Defines the number of instances to deploy
-variable "NumInstances" {
+variable "NumMasterInstances" {
   default = "5"
 }
 
@@ -22,7 +22,7 @@ variable "vcn_cidr" {
 variable "authorized_ips" {
   default = "0.0.0.0/0"
 }
-variable "instance_shape" {
+variable "master_instance_shape" {
   default = "VM.Standard2.4"
 }
 
