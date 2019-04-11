@@ -15,6 +15,14 @@ variable "NumMasterInstances" {
   default = "5"
 }
 
+variable "NumPrivateInstances" {
+  default = "5"
+}
+
+variable "NumPublicInstances" {
+  default = "3"
+}
+
 variable "vcn_cidr" {
   default = "10.1.0.0/16"
 }
@@ -22,7 +30,16 @@ variable "vcn_cidr" {
 variable "authorized_ips" {
   default = "0.0.0.0/0"
 }
+
 variable "master_instance_shape" {
+  default = "VM.Standard2.4"
+}
+
+variable "private_instance_shape" {
+  default = "VM.Standard2.4"
+}
+
+variable "public_instance_shape" {
   default = "VM.Standard2.4"
 }
 
@@ -58,6 +75,22 @@ variable "DiskSize" {
 
 variable "BootStrapFile" {
   default = "./userdata/bootstrap"
+}
+
+variable "BootStrapPrivateFile" {
+  default = "./userdata/bootstrapprivate"
+}
+
+variable "BootStrapPublicFile" {
+  default = "./userdata/bootstrappublic"
+}
+
+variable "BootStrapServer" {
+  default = "130.61.109.222"
+}
+
+variable "BootStrapPort" {
+  default = "80"
 }
 
 variable "volume_attachment_device" {
