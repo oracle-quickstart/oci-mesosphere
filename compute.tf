@@ -12,7 +12,7 @@ resource "oci_core_instance" "DCOSMasterInstance" {
     subnet_id        = "${oci_core_subnet.DCOSSubnet.id}"
     display_name     = "primaryvnic"
     assign_public_ip = true
-    hostname_label   = "mcp${count.index}"
+    hostname_label   = "dcos${count.index}"
   }
 
   source_details {
