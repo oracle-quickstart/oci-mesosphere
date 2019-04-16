@@ -10,19 +10,6 @@ variable "compartment_ocid" {}
 variable "ssh_public_key" {}
 variable "ssh_private_key" {}
 
-# Defines the number of instances to deploy
-variable "NumMasterInstances" {
-  default = "5"
-}
-
-variable "NumPrivateInstances" {
-  default = "5"
-}
-
-variable "NumPublicInstances" {
-  default = "3"
-}
-
 variable "vcn_cidr" {
   default = "10.1.0.0/16"
 }
@@ -31,16 +18,12 @@ variable "authorized_ips" {
   default = "0.0.0.0/0"
 }
 
-variable "master_instance_shape" {
-  default = "VM.Standard2.4"
+variable "BootStrapServer" {
+  default = "130.61.109.222"
 }
 
-variable "private_instance_shape" {
-  default = "VM.Standard2.4"
-}
-
-variable "public_instance_shape" {
-  default = "VM.Standard2.4"
+variable "BootStrapPort" {
+  default = "80"
 }
 
 variable "instance_image_ocid" {
@@ -73,26 +56,45 @@ variable "DiskSize" {
   default = "50" // size in GBs
 }
 
+variable "volume_attachment_device" {
+  default = "/dev/oracleoci/oraclevdb"
+}
+
+# Defines the the maaster nodes to deploy
+variable "NumMasterInstances" {
+  default = "5"
+}
+
+variable "master_instance_shape" {
+  default = "VM.Standard2.4"
+}
+
 variable "BootStrapFile" {
   default = "./userdata/bootstrap"
+}
+
+# Defines the the private agent nodes to deploy
+variable "NumPrivateInstances" {
+  default = "5"
+}
+
+variable "private_instance_shape" {
+  default = "VM.Standard2.4"
 }
 
 variable "BootStrapPrivateFile" {
   default = "./userdata/bootstrapprivate"
 }
 
+# Defines the the public agent nodes to deploy
+variable "NumPublicInstances" {
+  default = "3"
+}
+
+variable "public_instance_shape" {
+  default = "VM.Standard2.4"
+}
+
 variable "BootStrapPublicFile" {
   default = "./userdata/bootstrappublic"
-}
-
-variable "BootStrapServer" {
-  default = "130.61.109.222"
-}
-
-variable "BootStrapPort" {
-  default = "80"
-}
-
-variable "volume_attachment_device" {
-  default = "/dev/oracleoci/oraclevdb"
 }
