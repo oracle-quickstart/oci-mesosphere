@@ -13,7 +13,7 @@ resource "oci_core_instance" "DCOSPrivateInstance" {
   create_vnic_details {
     subnet_id        = "${oci_core_subnet.DCOSPrvSubnet.id}"
     display_name     = "primaryvnic"
-    assign_public_ip = true
+    assign_public_ip = false
     hostname_label   = "dcosprivate${count.index}"
   }
 
