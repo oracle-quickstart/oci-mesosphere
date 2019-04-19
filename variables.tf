@@ -14,6 +14,10 @@ variable "vcn_cidr" {
   default = "10.1.0.0/16"
 }
 
+variable subnet_cidr_offset {
+  default = 5
+}
+
 variable "authorized_ips" {
   default = "0.0.0.0/0"
 }
