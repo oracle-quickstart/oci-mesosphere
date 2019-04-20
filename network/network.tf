@@ -1,18 +1,11 @@
 // Copyright (c) 2017, 2019, Oracle and/or its affiliates. All rights reserved.
 
-provider "oci" {
-  region           = "${var.region}"
-  tenancy_ocid     = "${var.tenancy_ocid}"
-  user_ocid        = "${var.user_ocid}"
-  fingerprint      = "${var.fingerprint}"
-  private_key_path = "${var.private_key_path}"
-}
-
 resource "oci_core_virtual_network" "DCOSVCN" {
   cidr_block     = "${var.vcn_cidr}"
   compartment_id = "${var.compartment_ocid}"
   display_name   = "DCOSVCN"
   dns_label      = "DCOSVCN"
+  depends_on      = ["oci_objectstorage_namespace_metadata.namespace-metadata1.default_s3compartment_id"]
 }
 
 resource "oci_core_internet_gateway" "DCOSIG" {
