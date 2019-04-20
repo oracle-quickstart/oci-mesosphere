@@ -1,37 +1,4 @@
 // Copyright (c) 2017, 2019, Oracle and/or its affiliates. All rights reserved.
-// Define Public Agent Instances
-
-resource "oci_core_instance" "DCOSPublicInstance" {
-  count               = "${var.NumPublicInstances}"
-  availability_domain = "${lookup(data.oci_identity_availability_domains.ADs.availability_domains[count.index % var.nb_ad[var.region]],"name")}"
-  fault_domain        = "FAULT-DOMAIN-${(count.index / var.nb_ad[var.region]) % 3 + 1}"
-  compartment_id      = "${var.compartment_ocid}"
-  display_name        = "DCOSPublicInstance${count.index}"
-  shape               = "${var.public_instance_shape}"
-
-  create_vnic_details {
-    subnet_id        = "${oci_core_subnet.DCOSPubSubnet.id}"
-    display_name     = "primaryvnic"
-    assign_public_ip = true
-    hostname_label   = "dcospublic${count.index}"
-  }
-
-  source_details {
-    source_type = "image"
-    source_id   = "${var.instance_image_ocid[var.region]}"
-  }
-
-  metadata {
-    ssh_authorized_keys = "${var.ssh_public_key}"
-    user_data           = "${base64encode(file(var.BootStrapPublicFile))}"
-  }
-
-  timeouts {
-    create = "60m"
-  }
-}
-
-## Block Attachments for Public Agent Nodes
 
 resource "oci_core_volume" "DCOSPublicBlock" {
   count               = "${var.NumPublicInstances}"
@@ -54,7 +21,7 @@ resource "oci_core_volume_attachment" "DCOSPublicBlockAttach" {
     type        = "ssh"
     host        = "${oci_core_instance.DCOSPublicInstance.*.public_ip[count.index]}"
     user        = "opc"
-    private_key = "${var.ssh_private_key}"
+    private_key = "${local.ssh_private_key}"
   }
 
   # register and connect the iSCSI block volume
@@ -108,5 +75,4 @@ resource "oci_core_volume_attachment" "DCOSPublicBlockAttach" {
       "sudo iscsiadm -m node -o delete -T ${self.iqn} -p ${self.ipv4}:${self.port}",
       ]
     }
-
 }

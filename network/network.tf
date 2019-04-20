@@ -1,5 +1,13 @@
 // Copyright (c) 2017, 2019, Oracle and/or its affiliates. All rights reserved.
 
+provider "oci" {
+  region           = "${var.region}"
+  tenancy_ocid     = "${var.tenancy_ocid}"
+  user_ocid        = "${var.user_ocid}"
+  fingerprint      = "${var.fingerprint}"
+  private_key_path = "${var.private_key_path}"
+}
+
 resource "oci_core_virtual_network" "DCOSVCN" {
   cidr_block     = "${var.vcn_cidr}"
   compartment_id = "${var.compartment_ocid}"
@@ -124,4 +132,8 @@ resource "oci_core_subnet" "DCOSPubSubnet" {
   vcn_id              = "${oci_core_virtual_network.DCOSVCN.id}"
   route_table_id      = "${oci_core_route_table.DCOSRT.id}"
   dhcp_options_id     = "${oci_core_virtual_network.DCOSVCN.default_dhcp_options_id}"
+}
+
+output DCOSMstSubnet {
+  value = "${oci_core_subnet.DCOSMstSubnet.id}"
 }
