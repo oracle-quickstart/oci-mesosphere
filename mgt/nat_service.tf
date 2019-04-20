@@ -112,7 +112,7 @@ resource "oci_core_instance" "bastion" {
   }
 
   metadata {
-    ssh_authorized_keys = "${var.ssh_public_key}"
+    ssh_authorized_keys = "${local.ssh_public_key}"
   }
 
   timeouts {
@@ -192,7 +192,7 @@ resource "oci_core_instance" "private" {
   }
 
   metadata {
-    ssh_authorized_keys = "${var.ssh_public_key}"
+    ssh_authorized_keys = "${local.ssh_public_key}"
   }
 
   timeouts {
