@@ -5,7 +5,7 @@ resource "oci_core_virtual_network" "DCOSVCN" {
   compartment_id = "${var.compartment_ocid}"
   display_name   = "DCOSVCN"
   dns_label      = "DCOSVCN"
-  depends_on      = ["oci_objectstorage_namespace_metadata.namespace-metadata1.default_s3compartment_id"]
+#  depends_on      = ["oci_objectstorage_namespace_metadata.namespace-metadata1.default_s3compartment_id"]
 }
 
 resource "oci_core_internet_gateway" "DCOSIG" {
