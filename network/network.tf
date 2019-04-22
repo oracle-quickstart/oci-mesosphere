@@ -1,35 +1,34 @@
 // Copyright (c) 2017, 2019, Oracle and/or its affiliates. All rights reserved.
 
-resource "oci_core_virtual_network" "DCOSVCN" {
+resource "oci_core_virtual_network" "MesosNet" {
   cidr_block     = "${var.vcn_cidr}"
   compartment_id = "${var.compartment_ocid}"
-  display_name   = "DCOSVCN"
-  dns_label      = "DCOSVCN"
-#  depends_on      = ["oci_objectstorage_namespace_metadata.namespace-metadata1.default_s3compartment_id"]
+  display_name   = "MesosNet"
+  dns_label      = "MesosNet"
 }
 
-resource "oci_core_internet_gateway" "DCOSIG" {
+resource "oci_core_internet_gateway" "MesosIG" {
   compartment_id = "${var.compartment_ocid}"
-  display_name   = "DCOSIG"
-  vcn_id         = "${oci_core_virtual_network.DCOSVCN.id}"
+  display_name   = "MesosIG"
+  vcn_id         = "${oci_core_virtual_network.MesosNet.id}"
 }
 
-resource "oci_core_route_table" "DCOSRT" {
+resource "oci_core_route_table" "MesosRT" {
   compartment_id = "${var.compartment_ocid}"
-  vcn_id         = "${oci_core_virtual_network.DCOSVCN.id}"
-  display_name   = "DCOSRouteTable"
+  vcn_id         = "${oci_core_virtual_network.MesosNet.id}"
+  display_name   = "MesosRT"
 
   route_rules {
     destination       = "0.0.0.0/0"
     destination_type  = "CIDR_BLOCK"
-    network_entity_id = "${oci_core_internet_gateway.DCOSIG.id}"
+    network_entity_id = "${oci_core_internet_gateway.MesosIG.id}"
   }
 }
 
-resource "oci_core_security_list" "DCOSSecList" {
+resource "oci_core_security_list" "MesosSL" {
   compartment_id = "${var.compartment_ocid}"
-  display_name   = "DCOSSecList"
-  vcn_id         = "${oci_core_virtual_network.DCOSVCN.id}"
+  display_name   = "MesosSL"
+  vcn_id         = "${oci_core_virtual_network.MesosNet.id}"
 
   egress_security_rules = [
     {
@@ -82,51 +81,61 @@ resource "oci_core_security_list" "DCOSSecList" {
   ]
 }
 
+## Management Subnet
+
+resource "oci_core_subnet" "MgtSubnet" {
+  availability_domain = ""
+  cidr_block          = "10.1.50.0/24"
+  display_name        = "MgtSubnet"
+  dns_label           = "MgtSubnet"
+  security_list_ids   = ["${oci_core_security_list.MesosSL.id}"]
+  compartment_id      = "${var.compartment_ocid}"
+  vcn_id              = "${oci_core_virtual_network.MesosNet.id}"
+  route_table_id      = "${oci_core_route_table.MesosRT.id}"
+  dhcp_options_id     = "${oci_core_virtual_network.MesosNet.default_dhcp_options_id}"
+}
+
 ## Master Subnet
 
-resource "oci_core_subnet" "DCOSMstSubnet" {
+resource "oci_core_subnet" "MstSubnet" {
   availability_domain = ""
   cidr_block          = "10.1.20.0/24"
-  display_name        = "DCOSMstSubnet"
-  dns_label           = "DCOSMstSubnet"
-#  security_list_ids   = ["${oci_core_virtual_network.DCOSVCN.default_security_list_id}"]
-  security_list_ids   = ["${oci_core_security_list.DCOSSecList.id}"]
+  display_name        = "MstSubnet"
+  dns_label           = "MstSubnet"
+#  security_list_ids   = ["${oci_core_virtual_network.MesosNet.default_security_list_id}"]
+  security_list_ids   = ["${oci_core_security_list.MesosSL.id}"]
   compartment_id      = "${var.compartment_ocid}"
-  vcn_id              = "${oci_core_virtual_network.DCOSVCN.id}"
-  route_table_id      = "${oci_core_route_table.DCOSRT.id}"
-  dhcp_options_id     = "${oci_core_virtual_network.DCOSVCN.default_dhcp_options_id}"
+  vcn_id              = "${oci_core_virtual_network.MesosNet.id}"
+  route_table_id      = "${oci_core_route_table.MesosRT.id}"
+  dhcp_options_id     = "${oci_core_virtual_network.MesosNet.default_dhcp_options_id}"
 }
 
 ## Private Subnet
 
-resource "oci_core_subnet" "DCOSPrvSubnet" {
+resource "oci_core_subnet" "PrvSubnet" {
   availability_domain = ""
   cidr_block          = "10.1.30.0/24"
-  display_name        = "DCOSPrvSubnet"
-  dns_label           = "DCOSPrvSubnet"
-#  security_list_ids   = ["${oci_core_virtual_network.DCOSVCN.default_security_list_id}"]
-  security_list_ids   = ["${oci_core_security_list.DCOSSecList.id}"]
+  display_name        = "PrvSubnet"
+  dns_label           = "PrvSubnet"
+#  security_list_ids   = ["${oci_core_virtual_network.MesosNet.default_security_list_id}"]
+  security_list_ids   = ["${oci_core_security_list.MesosSL.id}"]
   compartment_id      = "${var.compartment_ocid}"
-  vcn_id              = "${oci_core_virtual_network.DCOSVCN.id}"
-  route_table_id      = "${oci_core_route_table.DCOSRT.id}"
-  dhcp_options_id     = "${oci_core_virtual_network.DCOSVCN.default_dhcp_options_id}"
+  vcn_id              = "${oci_core_virtual_network.MesosNet.id}"
+  route_table_id      = "${oci_core_route_table.MesosRT.id}"
+  dhcp_options_id     = "${oci_core_virtual_network.MesosNet.default_dhcp_options_id}"
 }
 
 ## Public Subnet
 
-resource "oci_core_subnet" "DCOSPubSubnet" {
+resource "oci_core_subnet" "PubSubnet" {
   availability_domain = ""
   cidr_block          = "10.1.40.0/24"
-  display_name        = "DCOSPubSubnet"
-  dns_label           = "DCOSPubSubnet"
-#  security_list_ids   = ["${oci_core_virtual_network.DCOSVCN.default_security_list_id}"]
-  security_list_ids   = ["${oci_core_security_list.DCOSSecList.id}"]
+  display_name        = "PubSubnet"
+  dns_label           = "PubSubnet"
+#  security_list_ids   = ["${oci_core_virtual_network.MesosNet.default_security_list_id}"]
+  security_list_ids   = ["${oci_core_security_list.MesosSL.id}"]
   compartment_id      = "${var.compartment_ocid}"
-  vcn_id              = "${oci_core_virtual_network.DCOSVCN.id}"
-  route_table_id      = "${oci_core_route_table.DCOSRT.id}"
-  dhcp_options_id     = "${oci_core_virtual_network.DCOSVCN.default_dhcp_options_id}"
-}
-
-output DCOSMstSubnet {
-  value = "${oci_core_subnet.DCOSMstSubnet.id}"
+  vcn_id              = "${oci_core_virtual_network.MesosNet.id}"
+  route_table_id      = "${oci_core_route_table.MesosRT.id}"
+  dhcp_options_id     = "${oci_core_virtual_network.MesosNet.default_dhcp_options_id}"
 }
