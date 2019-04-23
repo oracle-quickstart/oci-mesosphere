@@ -14,7 +14,7 @@ locals {
 }
 
 variable "instance_image_ocid" {
-  default = "ocid1.image.oc1.eu-frankfurt-1.aaaaaaaapnqtqas327xtzkd446ujqbxuws45zxjwuxdx7nkc4bwzkjl7n2jq"
+  default = "ocid1.image.oc1.eu-frankfurt-1.aaaaaaaaxwsgpdmevave6dlcoo5to2mvuvujcmtkjdtuyccvbgeazd6syggq"
 }
 
 variable "availability_domain" {
@@ -31,9 +31,9 @@ variable "NumMasterInstances" {
 }
 
 variable "boot_instance_shape" {
-  default = "VM.Standard2.2"
+  default = "VM.Standard2.1"
 }
 
 variable "BootStrapFile" {
-  default = "./bootstrap"
+  default = "./bootstrap.sh"
 }
