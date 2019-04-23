@@ -58,9 +58,12 @@ resource "null_resource" "diskmount" {
 
   provisioner "remote-exec" {
     inline = [
-      "echo 'Attaching iscsi drive' | sudo tee /etc/motd",
+      "echo 'This is the mesos bootstrap node' | sudo tee /etc/motd",
+      "echo ${oci_core_instance.MesosBootInstance.public_ip} > /tmp/public.ip",
+      "echo ${oci_core_instance.MesosBootInstance.private_ip} > /tmp/private.ip",
       "chmod +x /tmp/diskmount.sh",
-      "sudo /tmp/diskmount.sh"
+      "sudo /tmp/diskmount.sh",
+      "sudo rm -r /tmp/diskmount.sh"
     ]
   }
 
