@@ -6,6 +6,7 @@ resource "oci_core_instance" "MesosBootInstance" {
   compartment_id      = "${var.compartment_ocid}"
   display_name        = "MesosBootInstance"
   shape               = "${var.boot_instance_shape}"
+  depends_on          = ["oci_core_volume.MesosBootBlock"]
 
 
   create_vnic_details {

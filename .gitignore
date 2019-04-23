@@ -6,3 +6,4 @@ terraform.tfvars
 terraform.tfstate
 terraform.tfstate.backup
 vars.json
+graph.svg
