@@ -24,10 +24,10 @@
       "inline": [
         "sleep 30",
         "sudo yum update -y",
-        "sudo yum  install -y wget unzip tar xz curl ipset docker ntp",
+        "sudo yum install -y wget unzip tar xz curl ipset docker ntp",
         "sudo groupadd nogroup",
         "sudo groupadd docker",
-        "sudo systemctl start docker",
+        "sudo systemctl enable docker && sudo systemctl start docker",
         "sudo systemctl stop firewalld && sudo systemctl disable firewalld",
         "sudo systemctl stop dnsmasq && sudo systemctl disable dnsmasq.service",
         "sudo sed -i 's/SELINUX=enforcing/SELINUX=permissive/g' /etc/selinux/config"
