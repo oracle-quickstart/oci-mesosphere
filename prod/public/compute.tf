@@ -9,7 +9,7 @@ resource "oci_core_instance" "DCOSPublicInstance" {
   shape               = "${var.public_instance_shape}"
 
   create_vnic_details {
-    subnet_id        = "${oci_core_subnet.DCOSPubSubnet.id}"
+    subnet_id        = "${oci_core_subnet.PubSubnet.id}"
     display_name     = "primaryvnic"
     assign_public_ip = true
     hostname_label   = "dcospublic${count.index}"
