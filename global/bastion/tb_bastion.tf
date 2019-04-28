@@ -11,7 +11,7 @@ resource "oci_core_instance" "BastionInstance" {
     subnet_id        = "${data.terraform_remote_state.bastionsubnet.BastionSubnet}"
     display_name     = "primaryvnic"
     assign_public_ip = true
-    hostname_label   = "bastion"
+    hostname_label   = "tb_bastion"
   }
 
   source_details {
