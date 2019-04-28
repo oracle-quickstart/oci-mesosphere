@@ -81,6 +81,31 @@ resource "oci_core_security_list" "MesosSL" {
   ]
 }
 
+resource "oci_core_security_list" "BastionSecLst" {
+  compartment_id = "${var.compartment_ocid}"
+  display_name   = "BastionSecLst"
+  vcn_id         = "${oci_core_virtual_network.MesosNet.id}"
+
+  egress_security_rules = [
+    {
+      protocol    = "all"
+      destination = "0.0.0.0/0"
+    },
+  ]
+
+  ingress_security_rules = [
+    {
+      protocol = "6"      # tcp
+      source   = "${var.authorized_ips}"
+
+      tcp_options {
+        "min" = 22        # to allow SSH acccess to Linux instance
+        "max" = 22
+      },
+    },
+  ]
+}
+
 ## Management Subnet
 
 resource "oci_core_subnet" "MgtSubnet" {
@@ -134,6 +159,20 @@ resource "oci_core_subnet" "PubSubnet" {
   dns_label           = "PubSubnet"
 #  security_list_ids   = ["${oci_core_virtual_network.MesosNet.default_security_list_id}"]
   security_list_ids   = ["${oci_core_security_list.MesosSL.id}"]
+  compartment_id      = "${var.compartment_ocid}"
+  vcn_id              = "${oci_core_virtual_network.MesosNet.id}"
+  route_table_id      = "${oci_core_route_table.MesosRT.id}"
+  dhcp_options_id     = "${oci_core_virtual_network.MesosNet.default_dhcp_options_id}"
+}
+
+## Bastion Subnet
+
+resource "oci_core_subnet" "BastionSubnet" {
+  availability_domain = ""
+  cidr_block          = "10.1.60.0/24"
+  display_name        = "BastionSubnet"
+  dns_label           = "BastionSubnet"
+  security_list_ids   = ["${oci_core_security_list.BastionSecLst.id}"]
   compartment_id      = "${var.compartment_ocid}"
   vcn_id              = "${oci_core_virtual_network.MesosNet.id}"
   route_table_id      = "${oci_core_route_table.MesosRT.id}"

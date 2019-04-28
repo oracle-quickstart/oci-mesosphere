@@ -17,3 +17,7 @@ output PrvSubnet {
 output PubSubnet {
   value = "${oci_core_subnet.PubSubnet.id}"
 }
+
+output BastionSubnet {
+  value = "${oci_core_subnet.BastionSubnet.id}"
+}
