@@ -9,11 +9,11 @@
       "region": "eu-frankfurt-1",
       "fingerprint": "{{user `fingerprint`}}",
       "key_file": "{{user `key_file`}}",
-      "image_name": "MesosImage",
+      "image_name": "ProxyImage",
       "shape": "VM.Standard2.4",
       "ssh_username": "{{user `ssh_username`}}",
       "ssh_password": "{{user `ssh_password`}}",
-      "subnet_ocid": "{{user `subnet_ocid`}}",
+      "subnet_ocid": "{{user `pub_subnet`}}",
       "type": "oracle-oci"
     }
   ],
