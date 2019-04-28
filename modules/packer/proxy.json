@@ -1,0 +1,46 @@
+{
+  "builders":[
+    {
+      "base_image_ocid": "{{user `base_image_ocid`}}",
+      "tenancy_ocid": "{{user `tenancy_ocid`}}",
+      "compartment_ocid": "{{user `compartment_ocid`}}",
+      "user_ocid": "{{user `user_ocid`}}",
+      "availability_domain": "{{user `availability_domain`}}",
+      "region": "eu-frankfurt-1",
+      "fingerprint": "{{user `fingerprint`}}",
+      "key_file": "{{user `key_file`}}",
+      "image_name": "ProxyImage",
+      "shape": "VM.Standard2.1",
+      "ssh_username": "{{user `ssh_username`}}",
+      "ssh_password": "{{user `ssh_password`}}",
+      "subnet_ocid": "{{user `pub_subnet`}}",
+      "type": "oracle-oci"
+    }
+  ],
+
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "haproxy.cfg",
+      "destination": "/tmp/haproxy.cfg"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "sleep 30",
+        "sudo yum update -y",
+        "sudo yum install haproxy -y",
+        "sudo mv /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.orig",
+        "sudo mv /tmp/haproxy.cfg /etc/haproxy/haproxy.cfg",
+        "sudo systemctl enable firewalld",
+        "sudo systemctl start firewalld",
+        "sudo firewall-cmd --permanent --zone=public --add-service=http",
+        "sudo firewall-cmd --permanent --zone=public --add-service=https",
+        "sudo firewall-cmd --reload",
+        "sudo systemctl enable haproxy",
+        "sudo systemctl start haproxy",
+        "sudo sed -i 's/SELINUX=enforcing/SELINUX=permissive/g' /etc/selinux/config"
+      ]
+    }
+  ]
+}

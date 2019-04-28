@@ -1,0 +1,46 @@
+{
+  "builders":[
+    {
+      "base_image_ocid": "{{user `base_image_ocid`}}",
+      "tenancy_ocid": "{{user `tenancy_ocid`}}",
+      "compartment_ocid": "{{user `compartment_ocid`}}",
+      "user_ocid": "{{user `user_ocid`}}",
+      "availability_domain": "{{user `availability_domain`}}",
+      "region": "eu-frankfurt-1",
+      "fingerprint": "{{user `fingerprint`}}",
+      "key_file": "{{user `key_file`}}",
+      "image_name": "BastionTestImage",
+      "shape": "VM.Standard2.1",
+      "ssh_username": "{{user `ssh_username`}}",
+      "ssh_password": "{{user `ssh_password`}}",
+      "subnet_ocid": "{{user `bast_subnet`}}",
+      "type": "oracle-oci"
+    }
+  ],
+
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "{{user `ssh_source`}}",
+      "destination": "{{user `tmp_destination`}}"
+    },
+    {
+      "type": "shell",
+      "environment_vars": ["HOME={{user `home_destination`}}",
+                           "TEMP={{user `tmp_destination`}}"],
+      "inline": [
+        "sleep 30",
+        "sudo yum update -y",
+        "sudo systemctl enable firewalld",
+        "sudo systemctl start firewalld",
+        "sudo mv $TEMP $HOME",
+        "sudo chmod 0600 $HOME",
+        "sudo firewall-cmd --permanent --zone=public --add-service=ssh",
+        "sudo firewall-cmd --permanent --zone=public --add-service=http",
+        "sudo firewall-cmd --permanent --zone=public --add-service=https",
+        "sudo firewall-cmd --reload",
+        "sudo sed -i 's/SELINUX=enforcing/SELINUX=permissive/g' /etc/selinux/config"
+      ]
+    }
+  ]
+}
