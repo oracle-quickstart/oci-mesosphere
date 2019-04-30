@@ -11,7 +11,7 @@ resource "oci_core_instance" "MesosBootInstance" {
   create_vnic_details {
     subnet_id        = "${data.terraform_remote_state.mgtsubnet.MgtSubnet}"
     display_name     = "primaryvnic"
-    assign_public_ip = true
+    assign_public_ip = false
     hostname_label   = "mesosboot"
   }
 
@@ -42,36 +42,4 @@ resource "oci_core_volume_attachment" "MesosBootBlockAttach" {
   compartment_id  = "${var.compartment_ocid}"
   instance_id     = "${oci_core_instance.MesosBootInstance.id}"
   volume_id       = "${oci_core_volume.MesosBootBlock.id}"
-  device          = "/dev/oracleoci/oraclevdb"
-}
-
-resource "null_resource" "diskmount" {
-  triggers {
-    bn_public_ip = "${oci_core_instance.MesosBootInstance.public_ip}"
-    va_block_id   = "${oci_core_volume_attachment.MesosBootBlockAttach.id}"
-  }
-
-  provisioner "file" {
-    source      = "diskmount.sh"
-    destination = "/tmp/diskmount.sh"
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "echo 'This is the mesos bootstrap node' | sudo tee /etc/motd",
-      "echo ${oci_core_instance.MesosBootInstance.public_ip} > /tmp/public.ip",
-      "echo ${oci_core_instance.MesosBootInstance.private_ip} > /tmp/private.ip",
-      "chmod +x /tmp/diskmount.sh",
-      "sudo /tmp/diskmount.sh",
-      "sudo rm -r /tmp/diskmount.sh"
-    ]
-  }
-
-  connection {
-    timeout     = "30m"
-    type        = "ssh"
-    host        = "${oci_core_instance.MesosBootInstance.public_ip}"
-    user        = "opc"
-    private_key = "${local.ssh_private_key}"
-  }
 }

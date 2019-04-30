@@ -1,6 +1,5 @@
 .DS_Store
 ENV-VARS
-backend.tf
 .terraform
 terraform.tfvars
 terraform.tfstate
