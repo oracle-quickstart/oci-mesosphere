@@ -4,7 +4,7 @@
 resource "oci_core_instance" "BastionInstance" {
   availability_domain = "${var.availability_domain}"
   compartment_id      = "${var.compartment_ocid}"
-  display_name        = "BastionInstance"
+  display_name        = "Bastion"
   shape               = "${var.boot_instance_shape}"
 
   create_vnic_details {

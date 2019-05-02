@@ -9,7 +9,7 @@
       "region": "eu-frankfurt-1",
       "fingerprint": "{{user `fingerprint`}}",
       "key_file": "{{user `key_file`}}",
-      "image_name": "BastionTestImage",
+      "image_name": "BastionImage",
       "shape": "VM.Standard2.1",
       "ssh_username": "{{user `ssh_username`}}",
       "ssh_password": "{{user `ssh_password`}}",
