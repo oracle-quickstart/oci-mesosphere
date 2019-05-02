@@ -11,5 +11,5 @@ output MesosBootBlock {
 }
 
 output BootNodeIP {
-  value = "${oci_core_instance.MesosBootInstance.public_ip}"
+  value = "${oci_core_instance.MesosBootInstance.private_ip}"
 }

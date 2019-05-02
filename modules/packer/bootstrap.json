@@ -20,6 +20,11 @@
 
   "provisioners": [
     {
+      "type": "file",
+      "source": "diskmount.sh",
+      "destination": "/tmp/diskmount.sh"
+    },
+    {
       "type": "shell",
       "inline": [
         "sleep 30",
@@ -31,6 +36,7 @@
         "sudo yum update oci-utils",
         "sudo systemctl enable ocid.service && sudo systemctl start ocid.service",
         "sudo systemctl stop firewalld && sudo systemctl disable firewalld",
+        "sudo chmod +x /tmp/diskmount.sh",
         "sudo sed -i 's/SELINUX=enforcing/SELINUX=permissive/g' /etc/selinux/config"
       ]
     }
