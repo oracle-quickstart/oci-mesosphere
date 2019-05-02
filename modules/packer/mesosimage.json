@@ -9,7 +9,7 @@
       "user_ocid": "{{user `user_ocid`}}",
       "fingerprint": "{{user `fingerprint`}}",
       "key_file": "{{user `key_file`}}",
-      "image_name": "MesosBootImage",
+      "image_name": "Bootnode",
       "shape": "VM.Standard2.1",
       "ssh_username": "{{user `ssh_username`}}",
       "ssh_password": "{{user `ssh_password`}}",

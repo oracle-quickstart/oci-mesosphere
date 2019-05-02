@@ -14,11 +14,11 @@ locals {
 }
 
 variable "instance_image_ocid" {
-  default = "ocid1.image.oc1.eu-frankfurt-1.aaaaaaaaywhderq7wd2qwhd5yz3lavycspx2wz7b6mbxqyjgihmtv5png3ya"
+  default = "ocid1.image.oc1.eu-frankfurt-1.aaaaaaaaaejc26zn2cxfk5p2nhyuvlcufpd7oggqam2giqfdxf7f65wntuca"
 }
 
 variable "image_display_name" {
-  default = "BastionImage"
+  default = "Bastion"
 }
 
 variable "availability_domain" {
