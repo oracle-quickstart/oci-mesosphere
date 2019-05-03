@@ -20,6 +20,26 @@
 
   "provisioners": [
     {
+      "type": "file",
+      "source": "./genconf/config.yaml",
+      "destination": "/tmp/config.yaml"
+    },
+    {
+      "type": "file",
+      "source": "./genconf/ip-detect",
+      "destination": "/tmp/ip-detect"
+    },
+    {
+      "type": "file",
+      "source": "./genconf/license.txt",
+      "destination": "/tmp/license.txt"
+    },
+    {
+      "type": "file",
+      "source": "./genconf/dcos_generate_config.ee.sh",
+      "destination": "/tmp/dcos_generate_config.ee.sh"
+    },
+    {
       "type": "shell",
       "inline": [
         "sleep 30",

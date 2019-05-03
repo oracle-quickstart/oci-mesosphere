@@ -7,3 +7,5 @@ terraform.tfstate.backup
 vars.json
 *.pem
 *.cfg
+license.txt
+dcos_generate_config.ee.sh
