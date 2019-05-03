@@ -17,3 +17,4 @@ sudo /sbin/mkfs.ext3 /dev/oracleoci/oraclevdb1
 sudo mkdir -p /var/lib/dcos
 echo '/dev/oracleoci/oraclevdb1 /var/lib/dcos ext3 defaults,_netdev,noatime 0 2' | sudo tee -a /etc/fstab
 sudo mount -a
+echo "Mounting '/var/lib/dcos' succeeded" | sudo tee -a /var/log/diskmount.log

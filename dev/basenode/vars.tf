@@ -14,7 +14,7 @@ locals {
 }
 
 variable "instance_image_ocid" {
-  default = "ocid1.image.oc1.eu-frankfurt-1.aaaaaaaaxwsgpdmevave6dlcoo5to2mvuvujcmtkjdtuyccvbgeazd6syggq"
+  default = "ocid1.image.oc1.eu-frankfurt-1.aaaaaaaa6khzkhk7udufzznu46avtlgxblxbfpop6pmr2lckwtjvrum2gvzq"
 }
 
 variable "availability_domain" {
@@ -23,6 +23,10 @@ variable "availability_domain" {
 
 variable "DiskSize" {
   default = "50" // size in GBs
+}
+
+variable "volume_attachment_device" {
+  default = "/dev/oracleoci/oraclevdb"
 }
 
 # Defines the the nodes to deploy

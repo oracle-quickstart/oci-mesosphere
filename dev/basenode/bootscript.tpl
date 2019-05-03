@@ -1,6 +1,12 @@
 #cloud-config
 runcmd:
+- touch /var/log/diskmount.log
 - echo "Mesos Bootnode" >> /etc/motd
+- mkdir /run/opc
+- mv /tmp/diskmount.sh /run/opc/diskmount.sh
+- chown root:root /run/opc/diskmount.sh
+- chmod 755 /run/opc/diskmount.sh
+- /run/opc/diskmount.sh
 
 output:
     init:

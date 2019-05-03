@@ -1,7 +1,10 @@
-terraform {
-  backend "s3" {
+// Copyright (c) 2017, 2019, Oracle and/or its affiliates. All rights reserved.
+
+data "terraform_remote_state" "mgtsubnet" {
+  backend = "s3"
+  config {
     bucket       = "tfstate_file"
-    key      = "global/boot/terraform.tfstate"
+    key      = "network/terraform.tfstate"
     region   = "eu-frankfurt-1"
     endpoint = "https://oscemea005.compat.objectstorage.eu-frankfurt-1.oraclecloud.com"
     skip_region_validation      = true

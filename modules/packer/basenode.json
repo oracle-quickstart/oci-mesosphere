@@ -9,7 +9,7 @@
       "user_ocid": "{{user `user_ocid`}}",
       "fingerprint": "{{user `fingerprint`}}",
       "key_file": "{{user `key_file`}}",
-      "image_name": "MesosBootNode",
+      "image_name": "MesosBaseNode",
       "shape": "VM.Standard2.1",
       "ssh_username": "{{user `ssh_username`}}",
       "ssh_password": "{{user `ssh_password`}}",
@@ -19,6 +19,11 @@
   ],
 
   "provisioners": [
+    {
+      "type": "file",
+      "source": "diskmount.sh",
+      "destination": "/tmp/diskmount.sh"
+    },
     {
       "type": "shell",
       "inline": [
