@@ -22,8 +22,8 @@ resource "oci_core_instance" "MesosBootInstance" {
 
   metadata {
     ssh_authorized_keys = "${local.ssh_public_key}"
-    user_data           = "${base64encode(file(var.BootStrapFile))}"
-  }
+    user_data = "${base64encode(file("./bootscript.tpl"))}"
+    }
 
   timeouts {
     create = "60m"
@@ -42,4 +42,5 @@ resource "oci_core_volume_attachment" "MesosBootBlockAttach" {
   compartment_id  = "${var.compartment_ocid}"
   instance_id     = "${oci_core_instance.MesosBootInstance.id}"
   volume_id       = "${oci_core_volume.MesosBootBlock.id}"
+  device          = "${var.volume_attachment_device}"
 }
