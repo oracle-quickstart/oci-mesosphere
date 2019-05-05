@@ -1,6 +1,6 @@
 // Copyright (c) 2017, 2019, Oracle and/or its affiliates. All rights reserved.
 
-data "terraform_remote_state" "mgtsubnet" {
+data "terraform_remote_state" "pubsubnet" {
   backend = "s3"
   config {
     bucket       = "tfstate_file"

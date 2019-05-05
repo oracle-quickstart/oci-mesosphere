@@ -4,7 +4,7 @@ data "oci_identity_availability_domains" "ADs" {
   compartment_id = "${var.tenancy_ocid}"
 }
 
-data "terraform_remote_state" "mstrsubnet" {
+data "terraform_remote_state" "prvsubnet" {
   backend = "s3"
   config {
     bucket       = "tfstate_file"

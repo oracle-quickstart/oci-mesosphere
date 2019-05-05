@@ -14,30 +14,18 @@ locals {
 }
 
 variable "instance_image_ocid" {
-  default = "ocid1.image.oc1.eu-frankfurt-1.aaaaaaaa6khzkhk7udufzznu46avtlgxblxbfpop6pmr2lckwtjvrum2gvzq"
+  default = ""
 }
 
 variable "availability_domain" {
   default = "sDei:EU-FRANKFURT-1-AD-1"
 }
 
-variable "DiskSize" {
-  default = "50" // size in GBs
-}
-
-variable "volume_attachment_device" {
-  default = "/dev/oracleoci/oraclevdb"
-}
-
 # Defines the the nodes to deploy
-variable "NumMasterInstances" {
+variable "NumProxyInstances" {
   default = "1"
 }
 
-variable "boot_instance_shape" {
-  default = "VM.Standard2.4"
-}
-
-variable "BootStrapFile" {
-  default = "./bootstrap.sh"
+variable "squid_instance_shape" {
+  default = "VM.Standard2.1"
 }

@@ -1,12 +1,16 @@
 #cloud-config
 runcmd:
 - touch /var/log/diskmount.log
-- echo "Mesos Bootnode" >> /etc/motd
+- echo "Mesos Public Node" >> /etc/motd
 - mkdir /run/opc
 - mv /tmp/diskmount.sh /run/opc/diskmount.sh
 - chown root:root /run/opc/diskmount.sh
 - chmod 755 /run/opc/diskmount.sh
 - /run/opc/diskmount.sh
+- mkdir /tmp/dcos && cd /tmp/dcos
+- curl -O http://10.1.50.115:80/dcos_install.sh
+- bash dcos_install.sh slave_public > /var/log/mesosinstall.log
+
 
 output:
     init:

@@ -1,6 +1,5 @@
 #!/bin/bash
 echo "Started diskmount script" | sudo tee -a /var/log/diskmount.log
-sudo oci-iscsi-config -s
 counter=0
 while [ ! -e /dev/oracleoci/oraclevdb ]; do
     sleep 100
