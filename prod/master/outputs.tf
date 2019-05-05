@@ -1,10 +1,11 @@
-// Copyright (c) 2017, 2019, Oracle and/or its affiliates. All rights reserved.
+/*
+ * This file reads and puts out the object storage namespace and namespace_metadata.
+ */
 
-# Output the private and public IPs of the master instance
+output MesosMstInstance {
+   value = "${oci_core_instance.MesosMstInstance.*.id}"
+ }
+
 output "MasterInstancePrivateIPs" {
-  value = ["${oci_core_instance.DCOSMasterInstance.*.private_ip}"]
-}
-
-output "MasterInstancePublicIPs" {
-  value = ["${oci_core_instance.DCOSMasterInstance.*.public_ip}"]
-}
+   value = ["${oci_core_instance.MesosMstInstance.*.private_ip}"]
+ }

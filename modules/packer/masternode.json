@@ -9,8 +9,8 @@
       "user_ocid": "{{user `user_ocid`}}",
       "fingerprint": "{{user `fingerprint`}}",
       "key_file": "{{user `key_file`}}",
-      "image_name": "Bootnode",
-      "shape": "VM.Standard2.1",
+      "image_name": "MesosMstNode",
+      "shape": "VM.DenseIO1.4",
       "ssh_username": "{{user `ssh_username`}}",
       "ssh_password": "{{user `ssh_password`}}",
       "subnet_ocid": "{{user `mgt_subnet`}}",
@@ -21,8 +21,8 @@
   "provisioners": [
     {
       "type": "file",
-      "source": "diskmount.sh",
-      "destination": "/tmp/diskmount.sh"
+      "source": "./scripts/nvmemount.sh",
+      "destination": "/tmp/nvmemount.sh"
     },
     {
       "type": "shell",
@@ -36,7 +36,6 @@
         "sudo yum update oci-utils",
         "sudo systemctl enable ocid.service && sudo systemctl start ocid.service",
         "sudo systemctl stop firewalld && sudo systemctl disable firewalld",
-        "sudo chmod +x /tmp/diskmount.sh",
         "sudo sed -i 's/SELINUX=enforcing/SELINUX=permissive/g' /etc/selinux/config"
       ]
     }

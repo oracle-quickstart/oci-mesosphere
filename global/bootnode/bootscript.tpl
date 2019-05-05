@@ -1,14 +1,14 @@
 #cloud-config
 runcmd:
 - echo "Mesos Bootnode" >> /etc/motd
-- mkdir -p ~/genconf
-- mv /tmp/config.yaml ~/genconf/config.yaml
-- mv /tmp/license.txt ~/genconf/license.txt
-- mv /tmp/dcos_generate_config.ee.sh ~/genconf/dcos_generate_config.ee.sh
-- chmod 755 ~/genconf/dcos_generate_config.ee.sh
-- mv /tmp/ip-detect ~/genconf/ip-detect
-- chmod 755 ~/genconf/ip-detect
-- echo ~/genconf/ip-detect >> ~/genconf/bootnode_ip.txt
+- mkdir -p /home/opc/genconf
+- mv /tmp/config.yaml /home/opc/genconf/config.yaml
+- mv /tmp/license.txt /home/opc/genconf/license.txt
+- mv /tmp/dcos_generate_config.ee.sh /home/opc/dcos_generate_config.ee.sh
+- chmod 755 /home/opc/dcos_generate_config.ee.sh
+- mv /tmp/ip-detect /home/opc/genconf/ip-detect
+- chmod 755 /home/opc/genconf/ip-detect
+- /home/opc/genconf/ip-detect >> /home/opc/bootnode_ip.txt
 
 output:
     init:

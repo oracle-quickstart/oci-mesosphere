@@ -4,7 +4,7 @@ data "oci_identity_availability_domains" "ADs" {
   compartment_id = "${var.tenancy_ocid}"
 }
 
-data "terraform_remote_state" "mstrsubnet" {
+data "terraform_remote_state" "mstsubnet" {
   backend = "s3"
   config {
     bucket       = "tfstate_file"
@@ -17,6 +17,6 @@ data "terraform_remote_state" "mstrsubnet" {
     skip_get_ec2_platforms      = true
     skip_metadata_api_check     = true
     force_path_style            = true
-    shared_credentials_file     = "/Users/localadmin/.oci/s3cred"
+    shared_credentials_file     = "/Users/torsten/.aws/credentials"
   }
 }

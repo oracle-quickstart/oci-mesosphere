@@ -11,7 +11,7 @@ resource "oci_core_instance" "ProxyInstance" {
     subnet_id        = "${data.terraform_remote_state.pubsubnet.PubSubnet}"
     display_name     = "primaryvnic"
     assign_public_ip = true
-    hostname_label   = "bastion"
+    hostname_label   = "proxy"
   }
 
   source_details {

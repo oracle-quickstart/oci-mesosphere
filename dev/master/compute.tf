@@ -12,7 +12,7 @@ resource "oci_core_instance" "DCOSMasterInstance" {
   create_vnic_details {
     subnet_id        = "${data.terraform_remote_state.mstrsubnet.MstSubnet}"
     display_name     = "primaryvnic"
-    assign_public_ip = true
+    assign_public_ip = false
     hostname_label   = "dcosmaster${count.index}"
   }
 

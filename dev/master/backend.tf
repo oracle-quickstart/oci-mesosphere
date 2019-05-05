@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket       = "tfstate_file"
-    key      = "prod/master/terraform.tfstate"
+    key      = "dev/master/terraform.tfstate"
     region   = "eu-frankfurt-1"
     endpoint = "https://oscemea005.compat.objectstorage.eu-frankfurt-1.oraclecloud.com"
     skip_region_validation      = true

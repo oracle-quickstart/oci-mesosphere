@@ -1,5 +1,3 @@
-// Copyright (c) 2017, 2019, Oracle and/or its affiliates. All rights reserved.
-
 variable "tenancy_ocid" {}
 variable "user_ocid" {}
 variable "fingerprint" {}
@@ -7,26 +5,20 @@ variable "private_key_path" {}
 variable "region" {}
 
 variable "compartment_ocid" {}
-variable "ssh_public_key_path" {}
-variable "ssh_private_key_path" {}
+variable "ssh_public_key" {}
+variable "ssh_private_key" {}
 
 locals {
-  ssh_public_key = "${file("${var.ssh_public_key_path}")}"
-  ssh_private_key = "${file("${var.ssh_private_key_path}")}"
+  ssh_public_key = "${file("${var.ssh_public_key}")}"
+  ssh_private_key = "${file("${var.ssh_private_key}")}"
 }
 
 variable "instance_image_ocid" {
-  type = "map"
+  default = "ocid1.image.oc1.eu-frankfurt-1.aaaaaaaa5o2632n3nykduszon2ovdswn734huv7yhidvovnxol3447shtdgq"
+}
 
-  default = {
-    // See https://docs.us-phoenix-1.oraclecloud.com/images/
-    // Oracle-provided image "CentOS-7-2019.03.08-0"
-    us-phoenix-1   = "ocid1.image.oc1.phx.aaaaaaaaa2ph5vy4u7vktmf3c6zemhlncxkomvay2afrbw5vouptfbydwmtq"
-    us-ashburn-1   = "ocid1.image.oc1.iad.aaaaaaaahhgvnnprjhfmzynecw2lqkwhztgibz5tcs3x4d5rxmbqcmesyqta"
-    eu-frankfurt-1 = "ocid1.image.oc1.eu-frankfurt-1.aaaaaaaavsw2452x5psvj7lzp7opjcpj3yx7or4swwzl5vrdydxtfv33sbmq"
-    uk-london-1    = "ocid1.image.oc1.uk-london-1.aaaaaaaa3iltzfhdk5m6f27wcuw4ttcfln54twkj66rsbn52yemg3gi5pkqa"
-    ca-toronto-1   = "ocid1.image.oc1.ca-toronto-1.aaaaaaaaqqbtppujg46m2twxeam2god3ktu5s6ehamexb66wsb4ll4vaxpfq"
-  }
+variable "availability_domain" {
+  default = "sDei:EU-FRANKFURT-1-AD-1"
 }
 
 variable "nb_ad" {
@@ -41,23 +33,11 @@ variable "nb_ad" {
   }
 }
 
-variable "DiskSize" {
-  default = "50" // size in GBs
-}
-
-variable "volume_attachment_device" {
-  default = "/dev/oracleoci/oraclevdb"
-}
-
-# Defines the the maaster nodes to deploy
+# Defines the the nodes to deploy
 variable "NumMasterInstances" {
   default = "5"
 }
 
-variable "master_instance_shape" {
-  default = "VM.Standard2.4"
-}
-
-variable "BootStrapFile" {
-  default = "./bootstrap"
+variable "mst_instance_shape" {
+  default = "VM.DenseIO1.4"
 }

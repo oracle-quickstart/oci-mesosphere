@@ -1,18 +1,18 @@
 // Copyright (c) 2017, 2019, Oracle and/or its affiliates. All rights reserved.
 
 
-resource "oci_core_instance" "MesosBaseInstance" {
+resource "oci_core_instance" "MesosInstance" {
   availability_domain = "${var.availability_domain}"
   compartment_id      = "${var.compartment_ocid}"
-  display_name        = "MesosBaseInstance"
+  display_name        = "MesosInstance"
   shape               = "${var.boot_instance_shape}"
-  depends_on          = ["oci_core_volume.MesosBaseBlock"]
+  depends_on          = ["oci_core_volume.MesosBlock"]
 
   create_vnic_details {
-    subnet_id        = "${data.terraform_remote_state.mgtsubnet.MgtSubnet}"
+    subnet_id        = "${data.terraform_remote_state.prvsubnet.PrvSubnet}"
     display_name     = "primaryvnic"
     assign_public_ip = false
-    hostname_label   = "mesosbase"
+    hostname_label   = "mesos"
   }
 
   source_details {
@@ -30,17 +30,17 @@ resource "oci_core_instance" "MesosBaseInstance" {
   }
 }
 
-resource "oci_core_volume" "MesosBaseBlock" {
+resource "oci_core_volume" "MesosBlock" {
   availability_domain = "${var.availability_domain}"
   compartment_id      = "${var.compartment_ocid}"
-  display_name        = "MesosBaseBlock"
+  display_name        = "MesosBlock"
   size_in_gbs         = "${var.DiskSize}"
 }
 
-resource "oci_core_volume_attachment" "MesosBaseBlockAttach" {
+resource "oci_core_volume_attachment" "MesosBlockAttach" {
   attachment_type = "iscsi"
   compartment_id  = "${var.compartment_ocid}"
-  instance_id     = "${oci_core_instance.MesosBaseInstance.id}"
-  volume_id       = "${oci_core_volume.MesosBaseBlock.id}"
+  instance_id     = "${oci_core_instance.MesosInstance.id}"
+  volume_id       = "${oci_core_volume.MesosBlock.id}"
   device          = "${var.volume_attachment_device}"
 }

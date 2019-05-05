@@ -35,7 +35,7 @@ variable "NumMasterInstances" {
 }
 
 variable "boot_instance_shape" {
-  default = "VM.Standard2.1"
+  default = "VM.Standard2.4"
 }
 
 variable "BootStrapFile" {

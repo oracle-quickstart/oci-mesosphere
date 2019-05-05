@@ -6,12 +6,11 @@ resource "oci_core_instance" "MesosBootInstance" {
   compartment_id      = "${var.compartment_ocid}"
   display_name        = "MesosBootInstance"
   shape               = "${var.boot_instance_shape}"
-  depends_on          = ["oci_core_volume.MesosBootBlock"]
 
   create_vnic_details {
     subnet_id        = "${data.terraform_remote_state.mgtsubnet.MgtSubnet}"
     display_name     = "primaryvnic"
-    assign_public_ip = false
+    assign_public_ip = true
     hostname_label   = "mesosboot"
   }
 
@@ -28,19 +27,4 @@ resource "oci_core_instance" "MesosBootInstance" {
   timeouts {
     create = "60m"
   }
-}
-
-resource "oci_core_volume" "MesosBootBlock" {
-  availability_domain = "${var.availability_domain}"
-  compartment_id      = "${var.compartment_ocid}"
-  display_name        = "MesosBootBlock"
-  size_in_gbs         = "${var.DiskSize}"
-}
-
-resource "oci_core_volume_attachment" "MesosBootBlockAttach" {
-  attachment_type = "iscsi"
-  compartment_id  = "${var.compartment_ocid}"
-  instance_id     = "${oci_core_instance.MesosBootInstance.id}"
-  volume_id       = "${oci_core_volume.MesosBootBlock.id}"
-  device          = "${var.volume_attachment_device}"
 }
