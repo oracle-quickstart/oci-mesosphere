@@ -30,6 +30,7 @@
         "sleep 30",
         "sudo yum update -y",
         "sudo yum install haproxy -y",
+        "sudo mkdir /run/haproxy",
         "sudo mv /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.orig",
         "sudo mv /tmp/haproxy.cfg /etc/haproxy/haproxy.cfg",
         "sudo systemctl enable firewalld",

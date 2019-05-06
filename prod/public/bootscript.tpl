@@ -8,7 +8,7 @@ runcmd:
 - chmod 755 /run/opc/diskmount.sh
 - /run/opc/diskmount.sh
 - mkdir /tmp/dcos && cd /tmp/dcos
-- curl -O http://10.1.50.115:80/dcos_install.sh
+- curl -O http://mesosboot.mgtsubnet.mesosnet.oraclevcn.com:80/dcos_install.sh
 - bash dcos_install.sh slave_public > /var/log/mesosinstall.log
 
 

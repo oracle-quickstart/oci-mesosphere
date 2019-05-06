@@ -6,10 +6,10 @@ output MesosBootInstance {
    value = "${oci_core_instance.MesosBootInstance.id}"
  }
 
-output BootNodeIP {
+output PrivateIP {
   value = "${oci_core_instance.MesosBootInstance.private_ip}"
 }
 
-output BootNodeIP {
+output PublicIP {
  value = "${oci_core_instance.MesosBootInstance.public_ip}"
 }

@@ -9,8 +9,9 @@ runcmd:
 - chmod 755 /run/opc/nvmemount.sh
 - /run/opc/nvmemount.sh
 - mkdir /tmp/dcos && cd /tmp/dcos
-- curl -O http://10.1.50.115:80/dcos_install.sh
-- bash dcos_install.sh master > /var/log/mesosinstall.log
+- curl -O http://mesosboot.mgtsubnet.mesosnet.oraclevcn.com:80/dcos_install.sh
+- chmod 755 /tmp/dcos/dcos_install.sh
+- bash /tmp/dcos/dcos_install.sh master > /var/log/mesosinstall.log
 
 output:
     init:

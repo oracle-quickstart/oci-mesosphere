@@ -7,7 +7,7 @@ data "oci_identity_availability_domains" "ADs" {
 data "terraform_remote_state" "prvsubnet" {
   backend = "s3"
   config {
-    bucket       = "tfstate_file"
+    bucket   = "tfstate_file"
     key      = "network/terraform.tfstate"
     region   = "eu-frankfurt-1"
     endpoint = "https://oscemea005.compat.objectstorage.eu-frankfurt-1.oraclecloud.com"

@@ -5,6 +5,7 @@ runcmd:
 - mv /tmp/config.yaml /home/opc/genconf/config.yaml
 - mv /tmp/license.txt /home/opc/genconf/license.txt
 - mv /tmp/dcos_generate_config.ee.sh /home/opc/dcos_generate_config.ee.sh
+- mv /tmp/dcos_generate_config.sh /home/opc/dcos_generate_config.sh
 - chmod 755 /home/opc/dcos_generate_config.ee.sh
 - mv /tmp/ip-detect /home/opc/genconf/ip-detect
 - chmod 755 /home/opc/genconf/ip-detect

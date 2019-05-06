@@ -40,6 +40,11 @@
       "destination": "/tmp/dcos_generate_config.ee.sh"
     },
     {
+      "type": "file",
+      "source": "./genconf/dcos_generate_config.sh",
+      "destination": "/tmp/dcos_generate_config.sh"
+    },
+    {
       "type": "shell",
       "inline": [
         "sleep 30",

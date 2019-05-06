@@ -9,3 +9,4 @@ vars.json
 *.cfg
 license.txt
 dcos_generate_config.ee.sh
+dcos_generate_config.sh
