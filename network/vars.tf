@@ -15,8 +15,16 @@ locals {
   ssh_private_key = "${file("${var.ssh_private_key_path}")}"
 }
 
+variable "availability_domain" {
+  default = "sDei:EU-FRANKFURT-1-AD-1"
+}
+
 variable "vcn_cidr" {
   default = "10.1.0.0/16"
+}
+
+variable "subnet_cidr_offset" {
+  default = 5
 }
 
 variable "authorized_ips" {

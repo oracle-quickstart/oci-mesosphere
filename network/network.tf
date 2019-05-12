@@ -1,5 +1,16 @@
 // Copyright (c) 2017, 2019, Oracle and/or its affiliates. All rights reserved.
 
+locals {
+  bastion_subnet_prefix = "${cidrsubnet(var.vcn_cidr, var.subnet_cidr_offset, 0)}"
+  private_subnet_prefix = "${cidrsubnet(var.vcn_cidr, var.subnet_cidr_offset, 1)}"
+
+  ad = "${var.availability_domain}"
+
+  tcp_protocol  = "6"
+  all_protocols = "all"
+  anywhere      = "0.0.0.0/0"
+}
+
 resource "oci_core_virtual_network" "MesosNet" {
   cidr_block     = "${var.vcn_cidr}"
   compartment_id = "${var.compartment_ocid}"
@@ -9,14 +20,21 @@ resource "oci_core_virtual_network" "MesosNet" {
 
 resource "oci_core_internet_gateway" "MesosIG" {
   compartment_id = "${var.compartment_ocid}"
-  display_name   = "MesosIG"
+  display_name   = "IntntGtw"
   vcn_id         = "${oci_core_virtual_network.MesosNet.id}"
 }
 
-resource "oci_core_route_table" "MesosRT" {
+resource "oci_core_nat_gateway" "MesosNG" {
   compartment_id = "${var.compartment_ocid}"
   vcn_id         = "${oci_core_virtual_network.MesosNet.id}"
-  display_name   = "MesosRT"
+  display_name   = "NatGtw"
+}
+
+
+resource "oci_core_route_table" "MesosPubRT" {
+  compartment_id = "${var.compartment_ocid}"
+  vcn_id         = "${oci_core_virtual_network.MesosNet.id}"
+  display_name   = "pubtable"
 
   route_rules {
     destination       = "0.0.0.0/0"
@@ -25,9 +43,44 @@ resource "oci_core_route_table" "MesosRT" {
   }
 }
 
+resource "oci_core_route_table" "MesosPrvRT" {
+  compartment_id = "${var.compartment_ocid}"
+  vcn_id         = "${oci_core_virtual_network.MesosNet.id}"
+  display_name   = "prvtable"
+
+  route_rules = [
+    {
+      destination       = "${local.anywhere}"
+      destination_type  = "CIDR_BLOCK"
+      network_entity_id = "${oci_core_nat_gateway.MesosNG.id}"
+    },
+  ]
+}
+
+resource "oci_core_security_list" "MesosNAT" {
+  compartment_id = "${var.compartment_ocid}"
+  display_name   = "prvseclist"
+  vcn_id         = "${oci_core_virtual_network.MesosNet.id}"
+
+  ingress_security_rules {
+    source   = "${local.bastion_subnet_prefix}"
+    protocol = "${local.tcp_protocol}"
+
+    tcp_options {
+      "min" = 22
+      "max" = 22
+    }
+  }
+
+  egress_security_rules {
+    destination = "${local.anywhere}"
+    protocol    = "${local.all_protocols}"
+  }
+}
+
 resource "oci_core_security_list" "MesosSL" {
   compartment_id = "${var.compartment_ocid}"
-  display_name   = "MesosSL"
+  display_name   = "pubseclist"
   vcn_id         = "${oci_core_virtual_network.MesosNet.id}"
 
   egress_security_rules = [
@@ -47,36 +100,9 @@ resource "oci_core_security_list" "MesosSL" {
       source   = "${var.authorized_ips}"
 
       tcp_options {
-        "min" = 22        # to allow SSH acccess to Linux instance
-        "max" = 22
-      },
-    },
-    {
-      protocol = "6"                     # tcp
-      source   = "${var.authorized_ips}"
-
-      tcp_options {
         "min" = 80        # to allow HTTP acccess to Mesos Admin
         "max" = 80
       },
-    },
-    {
-      protocol = "6"                     # tcp
-      source   = "${var.authorized_ips}"
-
-      tcp_options {
-        "min" = 8181        # to allow HTTP acccess to Zookeeper
-        "max" = 8181
-      },
-    },
-    {
-      protocol = "1"         # icmp
-      source   = "0.0.0.0/0"
-
-      icmp_options {
-        "type" = 3
-        "code" = 4
-      }
     },
   ]
 }
@@ -116,7 +142,7 @@ resource "oci_core_subnet" "MgtSubnet" {
   security_list_ids   = ["${oci_core_security_list.MesosSL.id}"]
   compartment_id      = "${var.compartment_ocid}"
   vcn_id              = "${oci_core_virtual_network.MesosNet.id}"
-  route_table_id      = "${oci_core_route_table.MesosRT.id}"
+  route_table_id      = "${oci_core_route_table.MesosPrvRT.id}"
   dhcp_options_id     = "${oci_core_virtual_network.MesosNet.default_dhcp_options_id}"
 }
 
@@ -131,7 +157,7 @@ resource "oci_core_subnet" "MstSubnet" {
   security_list_ids   = ["${oci_core_security_list.MesosSL.id}"]
   compartment_id      = "${var.compartment_ocid}"
   vcn_id              = "${oci_core_virtual_network.MesosNet.id}"
-  route_table_id      = "${oci_core_route_table.MesosRT.id}"
+  route_table_id      = "${oci_core_route_table.MesosPrvRT.id}"
   dhcp_options_id     = "${oci_core_virtual_network.MesosNet.default_dhcp_options_id}"
 }
 
@@ -146,7 +172,7 @@ resource "oci_core_subnet" "PrvSubnet" {
   security_list_ids   = ["${oci_core_security_list.MesosSL.id}"]
   compartment_id      = "${var.compartment_ocid}"
   vcn_id              = "${oci_core_virtual_network.MesosNet.id}"
-  route_table_id      = "${oci_core_route_table.MesosRT.id}"
+  route_table_id      = "${oci_core_route_table.MesosPrvRT.id}"
   dhcp_options_id     = "${oci_core_virtual_network.MesosNet.default_dhcp_options_id}"
 }
 
@@ -161,7 +187,7 @@ resource "oci_core_subnet" "PubSubnet" {
   security_list_ids   = ["${oci_core_security_list.MesosSL.id}"]
   compartment_id      = "${var.compartment_ocid}"
   vcn_id              = "${oci_core_virtual_network.MesosNet.id}"
-  route_table_id      = "${oci_core_route_table.MesosRT.id}"
+  route_table_id      = "${oci_core_route_table.MesosPubRT.id}"
   dhcp_options_id     = "${oci_core_virtual_network.MesosNet.default_dhcp_options_id}"
 }
 
@@ -175,6 +201,6 @@ resource "oci_core_subnet" "BastionSubnet" {
   security_list_ids   = ["${oci_core_security_list.BastionSecLst.id}"]
   compartment_id      = "${var.compartment_ocid}"
   vcn_id              = "${oci_core_virtual_network.MesosNet.id}"
-  route_table_id      = "${oci_core_route_table.MesosRT.id}"
+  route_table_id      = "${oci_core_route_table.MesosPubRT.id}"
   dhcp_options_id     = "${oci_core_virtual_network.MesosNet.default_dhcp_options_id}"
 }
