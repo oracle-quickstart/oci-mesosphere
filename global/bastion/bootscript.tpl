@@ -1,6 +1,6 @@
 #cloud-config
 runcmd:
-- echo "HAProxy" >> /etc/motd
+- echo "Bastion" >> /etc/motd
 - yum -y update
 
 output:

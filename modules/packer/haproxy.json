@@ -9,7 +9,7 @@
       "region": "eu-frankfurt-1",
       "fingerprint": "{{user `fingerprint`}}",
       "key_file": "{{user `key_file`}}",
-      "image_name": "BastionImage",
+      "image_name": "ProxyImage",
       "shape": "VM.Standard2.1",
       "ssh_username": "{{user `ssh_username`}}",
       "ssh_password": "{{user `ssh_password`}}",
@@ -17,8 +17,8 @@
       "type": "oracle-oci",
       "tags": [{
         "structure": "module",
-        "function": "bastion",
-        "name": "MesosBastion"
+        "function": "proxy",
+        "name": "HAProxy"
         }
       ]
     }
@@ -27,23 +27,26 @@
   "provisioners": [
     {
       "type": "file",
-      "source": "{{user `ssh_source`}}",
-      "destination": "{{user `ssh_tmp`}}"
+      "source": "conf/haproxy.cfg",
+      "destination": "/tmp/haproxy.cfg"
     },
     {
       "type": "shell",
-      "environment_vars": ["HOME={{user `ssh_home`}}",
-                           "TEMP={{user `ssh_tmp`}}"],
       "inline": [
         "sleep 30",
         "sudo yum update -y",
-        "sudo mv $TEMP $HOME",
-        "sudo chmod 0600 $HOME",
-        "sudo rm -fv $TEMP",
+        "sudo yum install -y haproxy certbot",
+        "sudo mkdir /run/haproxy",
+        "sudo mv /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.orig",
+        "sudo mv /tmp/haproxy.cfg /etc/haproxy/haproxy.cfg",
         "sudo systemctl enable firewalld",
         "sudo systemctl start firewalld",
-        "sudo firewall-cmd --permanent --zone=public --add-service=ssh",
+        "sudo firewall-cmd --permanent --zone=public --add-service=http",
+        "sudo firewall-cmd --permanent --zone=public --add-service=https",
+        "sudo firewall-cmd --permanent --zone=public --add-port=8080/tcp",
         "sudo firewall-cmd --reload",
+        "sudo systemctl enable haproxy",
+        "sudo systemctl start haproxy",
         "sudo sed -i 's/SELINUX=enforcing/SELINUX=permissive/g' /etc/selinux/config"
       ]
     }
@@ -52,7 +55,7 @@
   "post-processors": [
     {
       "type": "manifest",
-      "output": "BastionImage.json",
+      "output": "HAProxyImage.json",
       "strip_path": true
     }
   ]

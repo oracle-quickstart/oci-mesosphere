@@ -13,8 +13,14 @@
       "shape": "VM.Standard2.1",
       "ssh_username": "{{user `ssh_username`}}",
       "ssh_password": "{{user `ssh_password`}}",
-      "subnet_ocid": "{{user `priv_subnet`}}",
-      "type": "oracle-oci"
+      "subnet_ocid": "{{user `bast_subnet`}}",
+      "type": "oracle-oci",
+      "tags": [{
+        "structure": "module",
+        "function": "test",
+        "name": "WebServer"
+        }
+      ]
     }
   ],
 
@@ -33,6 +39,14 @@
         "sudo systemctl enable nginx && sudo systemctl start nginx",
         "sudo sed -i 's/SELINUX=enforcing/SELINUX=permissive/g' /etc/selinux/config"
       ]
+    }
+  ],
+
+  "post-processors": [
+    {
+      "type": "manifest",
+      "output": "WebServerImage.json",
+      "strip_path": true
     }
   ]
 }

@@ -5,7 +5,6 @@ variable "private_key_path" {}
 variable "region" {}
 variable "availability_domain" {}
 
-
 variable "compartment_ocid" {}
 variable "ssh_public_key" {}
 variable "ssh_private_key" {}
@@ -16,7 +15,20 @@ locals {
 }
 
 variable "display_name" {
-  default = "MesosMaster"
+  default = "MesosSlave"
+}
+
+variable "DiskSize" {
+  default = "50" // size in GBs
+}
+
+variable "consistent_drive_path" {
+  default = "/dev/oracleoci/oraclevdb"
+}
+
+# Defines the the nodes to deploy
+variable "NumSlaveInstances" {
+  default = "5"
 }
 
 variable "nb_ad" {
@@ -31,11 +43,6 @@ variable "nb_ad" {
   }
 }
 
-# Defines the the nodes to deploy
-variable "NumMasterInstances" {
-  default = "5"
-}
-
-variable "mst_instance_shape" {
-  default = "VM.DenseIO1.4"
+variable "boot_instance_shape" {
+  default = "VM.Standard2.4"
 }

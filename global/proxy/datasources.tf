@@ -1,9 +1,9 @@
 // Copyright (c) 2017, 2019, Oracle and/or its affiliates. All rights reserved.
 
-data "terraform_remote_state" "pubsubnet" {
+data "terraform_remote_state" "network" {
   backend = "s3"
   config {
-    bucket       = "tfstate_file"
+    bucket   = "tfstate_file"
     key      = "network/terraform.tfstate"
     region   = "eu-frankfurt-1"
     endpoint = "https://oscemea005.compat.objectstorage.eu-frankfurt-1.oraclecloud.com"
@@ -15,4 +15,10 @@ data "terraform_remote_state" "pubsubnet" {
     force_path_style            = true
     shared_credentials_file     = "/Users/torsten/.aws/credentials"
   }
+}
+
+data "oci_core_images" "ProxyImage" {
+  compartment_id = "${var.compartment_ocid}"
+  display_name = "${var.display_name}"
+  sort_by = "TIMECREATED"
 }

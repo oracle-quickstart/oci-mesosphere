@@ -104,6 +104,24 @@ resource "oci_core_security_list" "MesosSL" {
         "max" = 80
       },
     },
+    {
+      protocol = "6"                     # tcp
+      source   = "${var.authorized_ips}"
+
+      tcp_options {
+        "min" = 10339        # to allow Kibana acccess for demo
+        "max" = 10339
+      },
+    },
+    {
+      protocol = "6"                     # tcp
+      source   = "${var.authorized_ips}"
+
+      tcp_options {
+        "min" = 10500        # to allow Kafka acccess via WebSocket
+        "max" = 10500
+      },
+    },
   ]
 }
 
@@ -150,7 +168,7 @@ resource "oci_core_subnet" "MgtSubnet" {
 
 resource "oci_core_subnet" "MstSubnet" {
   availability_domain = ""
-  cidr_block          = "10.1.20.0/24"
+  cidr_block          = "10.1.20.0/29"
   display_name        = "MstSubnet"
   dns_label           = "MstSubnet"
 #  security_list_ids   = ["${oci_core_virtual_network.MesosNet.default_security_list_id}"]

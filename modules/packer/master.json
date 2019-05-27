@@ -9,12 +9,18 @@
       "user_ocid": "{{user `user_ocid`}}",
       "fingerprint": "{{user `fingerprint`}}",
       "key_file": "{{user `key_file`}}",
-      "image_name": "MesosMstNode",
+      "image_name": "MesosMaster",
       "shape": "VM.DenseIO1.4",
       "ssh_username": "{{user `ssh_username`}}",
       "ssh_password": "{{user `ssh_password`}}",
       "subnet_ocid": "{{user `mgt_subnet`}}",
-      "type": "oracle-oci"
+      "type": "oracle-oci",
+      "tags": [{
+        "structure": "module",
+        "function": "master",
+        "name": "MesosMaster"
+        }
+      ]
     }
   ],
 
@@ -38,6 +44,14 @@
         "sudo systemctl stop firewalld && sudo systemctl disable firewalld",
         "sudo sed -i 's/SELINUX=enforcing/SELINUX=permissive/g' /etc/selinux/config"
       ]
+    }
+  ],
+
+  "post-processors": [
+    {
+      "type": "manifest",
+      "output": "MesosMasterImage.json",
+      "strip_path": true
     }
   ]
 }

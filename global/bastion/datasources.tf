@@ -17,7 +17,8 @@ data "terraform_remote_state" "bastionsubnet" {
   }
 }
 
-data "oci_core_images" "bastion" {
-    compartment_id = "${var.compartment_ocid}"
-    display_name = "${var.image_display_name}"
+data "oci_core_images" "BastionImage" {
+  compartment_id = "${var.compartment_ocid}"
+  display_name = "${var.display_name}"
+  sort_by = "TIMECREATED"
 }

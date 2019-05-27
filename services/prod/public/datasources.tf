@@ -1,6 +1,10 @@
 // Copyright (c) 2017, 2019, Oracle and/or its affiliates. All rights reserved.
 
-data "terraform_remote_state" "network" {
+data "oci_identity_availability_domains" "ADs" {
+  compartment_id = "${var.tenancy_ocid}"
+}
+
+data "terraform_remote_state" "pubsubnet" {
   backend = "s3"
   config {
     bucket       = "tfstate_file"
@@ -17,7 +21,7 @@ data "terraform_remote_state" "network" {
   }
 }
 
-data "oci_core_images" "MesosBootNode" {
+data "oci_core_images" "MesosSlave" {
   compartment_id = "${var.compartment_ocid}"
   display_name = "${var.display_name}"
   sort_by = "TIMECREATED"

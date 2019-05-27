@@ -1,4 +1,0 @@
-#!/bin/bash
-sudo mkdir /tmp/dcos && cd /tmp/dcos
-sudo curl -O http://130.61.109.222:80/dcos_install.sh
-sudo bash dcos_install.sh slave_public
