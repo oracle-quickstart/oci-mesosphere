@@ -23,8 +23,7 @@ That should give you this:
 ![](./images/git-clone.png)
 
 ## Deployment Architecture
-![Mesos Architecture]
-/oracle/oci-quickstart-mesosphere/blob/master/images/mesos_architecture.png
+![mesos architecture](https://i.imgur.com/rhui8LG.png)
 
 ## Installation sequence
 
