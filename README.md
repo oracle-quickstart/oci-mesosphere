@@ -14,7 +14,7 @@ First off you'll need to do some pre deploy setup. That's all detailed [here](ht
 ## Clone the Module
 Now, you'll want a local copy of this repo. You can make that with the commands:
 
-    git clone https://github.com/oracle/oci-quickstart-meosphere.git
+    git clone https://github.com/oracle/oci-quickstart-mesosphere.git
     cd oci-quickstart-mesosphere/terraform
     ls
 
