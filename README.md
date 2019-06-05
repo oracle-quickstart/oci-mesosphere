@@ -22,6 +22,10 @@ That should give you this:
 
 ![](./images/git-clone.png)
 
+## Deployment Architecture
+![Mesos Architecture]
+(https://imgur.com/rhui8LG)
+
 ## Installation sequence
 
 1.	Deploy the network topology using the scripts in /network
