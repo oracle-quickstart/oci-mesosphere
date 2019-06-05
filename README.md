@@ -20,6 +20,91 @@ Now, you'll want a local copy of this repo. You can make that with the commands:
 
 That should give you this:
 
+    .
+    ├── LICENSE
+    ├── README.md
+    ├── global
+    │   ├── bastion
+    │   │   ├── backend.tf
+    │   │   ├── bootscript.tpl
+    │   │   ├── datasources.tf
+    │   │   ├── main.tf
+    │   │   ├── outputs.tf
+    │   │   ├── provider.tf
+    │   │   └── vars.tf
+    │   ├── bootnode
+    │   │   ├── backend.tf
+    │   │   ├── bootscript.tpl
+    │   │   ├── datasources.tf
+    │   │   ├── main.tf
+    │   │   ├── outputs.tf
+    │   │   ├── provider.tf
+    │   │   └── vars.tf
+    │   ├── proxy
+    │   │   ├── backend.tf
+    │   │   ├── bootscript.tpl
+    │   │   ├── datasources.tf
+    │   │   ├── main.tf
+    │   │   ├── outputs.tf
+    │   │   ├── provider.tf
+    │   │   └── vars.tf
+    │   └── statebucket
+    │       ├── bucket.tf
+    │       ├── datasources.tf
+    │       ├── outputs.tf
+    │       ├── provider.tf
+    │       └── vars.tf
+    ├── modules
+    │   └── packer
+    │       ├── WebServerImage.json
+    │       ├── bastion.json
+    │       ├── bootnode.json
+    │       ├── genconf
+    │       │   ├── config.yaml
+    │       │   └── ip-detect
+    │       ├── haproxy.json
+    │       ├── master.json
+    │       ├── scripts
+    │       │   ├── diskmount.sh
+    │       │   └── nvmemount.sh
+    │       ├── slave.json
+    │       └── webserver.json
+    ├── network
+    │   ├── backend.tf
+    │   ├── network.tf
+    │   ├── outputs.tf
+    │   ├── provider.tf
+    │   └── vars.tf
+    ├── provider.tf
+    ├── services
+    │   └── prod
+    │       ├── master
+    │       │   ├── backend.tf
+    │       │   ├── bootscript.tpl
+    │       │   ├── datasources.tf
+    │       │   ├── main.tf
+    │       │   ├── outputs.tf
+    │       │   ├── provider.tf
+    │       │   └── vars.tf
+    │       ├── public
+    │       │   ├── backend.tf
+    │       │   ├── bootscript.tpl
+    │       │   ├── datasources.tf
+    │       │   ├── main.tf
+    │       │   ├── outputs.tf
+    │       │   ├── provider.tf
+    │       │   └── vars.tf
+    │       └── slave
+    │           ├── backend.tf
+    │           ├── bootscript.tpl
+    │           ├── datasources.tf
+    │           ├── main.tf
+    │           ├── outputs.tf
+    │           ├── provider.tf
+    │           └── vars.tf
+    └── vars.tf
+
+
 ![](./images/git-clone.png)
 
 ## Deployment Architecture
