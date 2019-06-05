@@ -77,34 +77,32 @@ That should give you this:
     │   ├── outputs.tf
     │   ├── provider.tf
     │   └── vars.tf
-    ├── provider.tf
-    ├── services
-    │   └── prod
-    │       ├── master
-    │       │   ├── backend.tf
-    │       │   ├── bootscript.tpl
-    │       │   ├── datasources.tf
-    │       │   ├── main.tf
-    │       │   ├── outputs.tf
-    │       │   ├── provider.tf
-    │       │   └── vars.tf
-    │       ├── public
-    │       │   ├── backend.tf
-    │       │   ├── bootscript.tpl
-    │       │   ├── datasources.tf
-    │       │   ├── main.tf
-    │       │   ├── outputs.tf
-    │       │   ├── provider.tf
-    │       │   └── vars.tf
-    │       └── slave
-    │           ├── backend.tf
-    │           ├── bootscript.tpl
-    │           ├── datasources.tf
-    │           ├── main.tf
-    │           ├── outputs.tf
-    │           ├── provider.tf
-    │           └── vars.tf
-    └── vars.tf
+    └── services
+        └── prod
+            ├── master
+            │   ├── backend.tf
+            │   ├── bootscript.tpl
+            │   ├── datasources.tf
+            │   ├── main.tf
+            │   ├── outputs.tf
+            │   ├── provider.tf
+            │   └── vars.tf
+            ├── public
+            │   ├── backend.tf
+            │   ├── bootscript.tpl
+            │   ├── datasources.tf
+            │   ├── main.tf
+            │   ├── outputs.tf
+            │   ├── provider.tf
+            │   └── vars.tf
+            └── slave
+                ├── backend.tf
+                ├── bootscript.tpl
+                ├── datasources.tf
+                ├── main.tf
+                ├── outputs.tf
+                ├── provider.tf
+                └── vars.tf
 
 
 ![](./images/git-clone.png)
