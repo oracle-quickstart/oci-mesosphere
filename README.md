@@ -6,6 +6,10 @@ This repo is under active development. Building open source software is a commun
 
 ## Prerequisites
 First off you'll need to do some pre deploy setup. That's all detailed [here](https://github.com/oracle/oci-quickstart-prerequisites).
+1.	Install the latest version of terraform and packer
+2.	Sign up for OCI, retrieve the account data, store the necessary credentials in the x.tfvars files as well as the vars.json files and create .aws and/or .oci directory for cli and s3 access
+3.	Create a bucket in your tenant to store the state-file using the scripts in /global/statebucket
+
 
 ## Clone the Module
 Now, you'll want a local copy of this repo. You can make that with the commands:
@@ -17,6 +21,15 @@ Now, you'll want a local copy of this repo. You can make that with the commands:
 That should give you this:
 
 ![](./images/git-clone.png)
+
+## Installation sequence
+
+1.	Deploy the network topology using the scripts in /network
+2.	Build the custom images using packer and the scripts in /module/packer
+3.	Provision the boot node, for a commercial DC/OS complete the installation steps according to </link>
+4.	Released the bastion and Proxy for access protection
+5.	Provision the master nodes, slaves and public nodes using the scripts at /services/prod/… . Wait for the masters to complete before provisioning the slaves and the public nodes. This will take a while, because the HDD needs to be formatted as part of the installation process.
+6.	Redirect the HAProxy, the existing config file is using Round Robin between three public nodes
 
 ## Initialize the deployment
 We now need to initialize the directory with the module in it.  This makes the module aware of the OCI provider.  You can do this by running:
@@ -56,6 +69,10 @@ When the deployment is completed, it will show you the public IP of one of the i
 You can also login to the web console [here](https://console.us-phoenix-1.oraclecloud.com/a/compute/instances) to view the IaaS that is running the cluster.
 
 ![](./images/console.png)
+
+## Post processing
+1.	In order to support HTTPS, the cluster requires a domain and a certificate. The standard settings rely on one domain, services are separated using directories. Changing this structure will need wildcard certificates
+2.	Services on Mesos communicate via ports. Building new services, usually the port range for the public needs to be adjusted accordingly. The initial port range is very narrow to keep exposure limited, when exposing services to the public internet
 
 ## Destroy the Deployment
 When you no longer need the deployment, you can run this command to destroy it:
