@@ -4,12 +4,14 @@ This is a Terraform module that deploys [Mesosphere](https://www.mesosphere.com/
 
 This repo is under active development. Building open source software is a community effort. We're excited to engage with the community building this.
 
+## Deployment Architecture
+![mesos architecture](https://i.imgur.com/rhui8LG.png)
+
 ## Prerequisites
 First off you'll need to do some pre deploy setup. That's all detailed [here](https://github.com/oracle/oci-quickstart-prerequisites).
 1.	Install the latest version of terraform and packer
 2.	Sign up for OCI, retrieve the account data, store the necessary credentials in the x.tfvars files as well as the vars.json files and create .aws and/or .oci directory for cli and s3 access
 3.	Create a bucket in your tenant to store the state-file using the scripts in /global/statebucket
-
 
 ## Clone the Module
 Now, you'll want a local copy of this repo. You can make that with the commands:
@@ -106,9 +108,6 @@ That should give you this:
 
 
 ![](./images/git-clone.png)
-
-## Deployment Architecture
-![mesos architecture](https://i.imgur.com/rhui8LG.png)
 
 ## Installation sequence
 
