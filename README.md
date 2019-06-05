@@ -24,7 +24,7 @@ That should give you this:
 
 ## Deployment Architecture
 [Mesos Architecture]
-(/oci-quickstart-mesosphere/blob/master/images/mesos_architecture.png)
+(/blob/master/images/mesos_architecture.png)
 
 ## Installation sequence
 
