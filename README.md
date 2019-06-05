@@ -24,7 +24,7 @@ That should give you this:
 
 ## Deployment Architecture
 [Mesos Architecture]
-(/blob/master/images/mesos_architecture.png)
+(/master/images/mesos_architecture.png)
 
 ## Installation sequence
 
