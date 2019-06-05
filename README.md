@@ -24,7 +24,7 @@ That should give you this:
 
 ## Deployment Architecture
 ![Mesos Architecture]
-(/oracle/oci-quickstart-mesosphere/blob/master/images/mesos_architecture.png?raw=true)
+/oracle/oci-quickstart-mesosphere/blob/master/images/mesos_architecture.png?raw=true
 
 ## Installation sequence
 
