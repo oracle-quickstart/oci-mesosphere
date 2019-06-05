@@ -23,7 +23,7 @@ That should give you this:
 ![](./images/git-clone.png)
 
 ## Deployment Architecture
-![Mesos Architecture]
+[Mesos Architecture]
 (https://i.imgur.com/rhui8LG.png)
 
 ## Installation sequence
