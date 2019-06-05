@@ -24,7 +24,7 @@ That should give you this:
 
 ## Deployment Architecture
 ![Mesos Architecture]
-(https://imgur.com/rhui8LG)
+(https://i.imgur.com/rhui8LG.png)
 
 ## Installation sequence
 
