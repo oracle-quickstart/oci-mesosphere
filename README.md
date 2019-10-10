@@ -1,6 +1,6 @@
-# oci-quickstart-mesosphere
+# oci-mesosphere
 
-This is a Terraform module that deploys [Mesosphere](https://www.mesosphere.com/) on [Oracle Cloud Infrastructure (OCI)](https://cloud.oracle.com/en_US/cloud-infrastructure). It is developed jointly by Oracle and Mesosphere. For instructions on how to use this material and details on getting support from the vendor that maintains this material, please contact them directly.
+This is a Terraform module that deploys [Mesosphere](https://www.mesosphere.com/) on [Oracle Cloud Infrastructure (OCI)](https://cloud.oracle.com/en_US/cloud-infrastructure). It is developed jointly by Oracle and Mesosphere.
 
 This repo is under active development. Building open source software is a community effort. We're excited to engage with the community building this.
 
